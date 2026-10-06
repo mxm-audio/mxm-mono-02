@@ -1,0 +1,534 @@
+{
+  "schema_version": 1,
+  "plugin": "dk.mxm.mxm-mono-02",
+  "name": "Square lead",
+  "category": "lead",
+  "_comment": "`v` is the value and is authoritative. `text` is this plugin's own formatting of it, kept so the file can be read, and is never loaded.",
+  "params": {
+    "attack": {
+      "v": 0.1414355,
+      "text": "2 ms"
+    },
+    "bendrange": {
+      "v": 0.083333336,
+      "text": "2 st"
+    },
+    "cutoff": {
+      "v": 0.6,
+      "text": "60 %"
+    },
+    "decay": {
+      "v": 0.41550454,
+      "text": "300 ms"
+    },
+    "lfodelay": {
+      "v": 0.4,
+      "text": "600 ms"
+    },
+    "lfomode": {
+      "v": 0.0,
+      "text": "Sine"
+    },
+    "lforate": {
+      "v": 0.55955404,
+      "text": "5.00 Hz"
+    },
+    "lfosync": {
+      "v": 0.0,
+      "text": "Off"
+    },
+    "mod_amp_autobend": {
+      "v": 0.5,
+      "text": "+0 %"
+    },
+    "mod_amp_autobendon": {
+      "v": 0.0,
+      "text": "Off"
+    },
+    "mod_amp_bend": {
+      "v": 0.5,
+      "text": "+0 %"
+    },
+    "mod_amp_bendon": {
+      "v": 0.0,
+      "text": "Off"
+    },
+    "mod_amp_env": {
+      "v": 0.5,
+      "text": "+0 %"
+    },
+    "mod_amp_envon": {
+      "v": 0.0,
+      "text": "Off"
+    },
+    "mod_amp_key": {
+      "v": 0.5,
+      "text": "+0 %/oct"
+    },
+    "mod_amp_keyon": {
+      "v": 0.0,
+      "text": "Off"
+    },
+    "mod_amp_lfo": {
+      "v": 0.5,
+      "text": "+0 %"
+    },
+    "mod_amp_lfoon": {
+      "v": 0.0,
+      "text": "Off"
+    },
+    "mod_amp_lfowidth": {
+      "v": 0.5,
+      "text": "+0 %"
+    },
+    "mod_amp_lfowidthon": {
+      "v": 0.0,
+      "text": "Off"
+    },
+    "mod_amp_noise": {
+      "v": 0.5,
+      "text": "+0 %"
+    },
+    "mod_amp_noiseon": {
+      "v": 0.0,
+      "text": "Off"
+    },
+    "mod_amp_press": {
+      "v": 0.5,
+      "text": "+0 %"
+    },
+    "mod_amp_presson": {
+      "v": 0.0,
+      "text": "Off"
+    },
+    "mod_amp_sub": {
+      "v": 0.5,
+      "text": "+0 %"
+    },
+    "mod_amp_subon": {
+      "v": 0.0,
+      "text": "Off"
+    },
+    "mod_amp_vco1": {
+      "v": 0.5,
+      "text": "+0 %"
+    },
+    "mod_amp_vco1on": {
+      "v": 0.0,
+      "text": "Off"
+    },
+    "mod_amp_vco2": {
+      "v": 0.5,
+      "text": "+0 %"
+    },
+    "mod_amp_vco2on": {
+      "v": 0.0,
+      "text": "Off"
+    },
+    "mod_amp_vel": {
+      "v": 0.5,
+      "text": "+0 %"
+    },
+    "mod_amp_velon": {
+      "v": 0.0,
+      "text": "Off"
+    },
+    "mod_amp_wheel": {
+      "v": 0.5,
+      "text": "+0 %"
+    },
+    "mod_amp_wheelon": {
+      "v": 0.0,
+      "text": "Off"
+    },
+    "mod_cutoff_autobend": {
+      "v": 0.5,
+      "text": "+0.00 oct"
+    },
+    "mod_cutoff_autobendon": {
+      "v": 0.0,
+      "text": "Off"
+    },
+    "mod_cutoff_bend": {
+      "v": 0.5,
+      "text": "+0.00 oct"
+    },
+    "mod_cutoff_bendon": {
+      "v": 1.0,
+      "text": "On"
+    },
+    "mod_cutoff_env": {
+      "v": 0.5,
+      "text": "+0.00 oct"
+    },
+    "mod_cutoff_envon": {
+      "v": 1.0,
+      "text": "On"
+    },
+    "mod_cutoff_key": {
+      "v": 0.5,
+      "text": "+0.00 oct/oct"
+    },
+    "mod_cutoff_keyon": {
+      "v": 1.0,
+      "text": "On"
+    },
+    "mod_cutoff_lfo": {
+      "v": 0.5,
+      "text": "+0.00 oct"
+    },
+    "mod_cutoff_lfoon": {
+      "v": 1.0,
+      "text": "On"
+    },
+    "mod_cutoff_lfowidth": {
+      "v": 0.5,
+      "text": "+0.00 oct"
+    },
+    "mod_cutoff_lfowidthon": {
+      "v": 0.0,
+      "text": "Off"
+    },
+    "mod_cutoff_noise": {
+      "v": 0.5,
+      "text": "+0.00 oct"
+    },
+    "mod_cutoff_noiseon": {
+      "v": 0.0,
+      "text": "Off"
+    },
+    "mod_cutoff_press": {
+      "v": 0.5,
+      "text": "+0.00 oct"
+    },
+    "mod_cutoff_presson": {
+      "v": 0.0,
+      "text": "Off"
+    },
+    "mod_cutoff_sub": {
+      "v": 0.5,
+      "text": "+0.00 oct"
+    },
+    "mod_cutoff_subon": {
+      "v": 0.0,
+      "text": "Off"
+    },
+    "mod_cutoff_vco1": {
+      "v": 0.5,
+      "text": "+0.00 oct"
+    },
+    "mod_cutoff_vco1on": {
+      "v": 0.0,
+      "text": "Off"
+    },
+    "mod_cutoff_vco2": {
+      "v": 0.5,
+      "text": "+0.00 oct"
+    },
+    "mod_cutoff_vco2on": {
+      "v": 0.0,
+      "text": "Off"
+    },
+    "mod_cutoff_vel": {
+      "v": 0.5,
+      "text": "+0.00 oct"
+    },
+    "mod_cutoff_velon": {
+      "v": 0.0,
+      "text": "Off"
+    },
+    "mod_cutoff_wheel": {
+      "v": 0.5,
+      "text": "+0.00 oct"
+    },
+    "mod_cutoff_wheelon": {
+      "v": 0.0,
+      "text": "Off"
+    },
+    "mod_pitch_autobend": {
+      "v": 0.5,
+      "text": "+0.00 st"
+    },
+    "mod_pitch_autobendon": {
+      "v": 1.0,
+      "text": "On"
+    },
+    "mod_pitch_bend": {
+      "v": 0.5,
+      "text": "+0.00 st"
+    },
+    "mod_pitch_bendon": {
+      "v": 0.0,
+      "text": "Off"
+    },
+    "mod_pitch_env": {
+      "v": 0.5,
+      "text": "+0.00 st"
+    },
+    "mod_pitch_envon": {
+      "v": 0.0,
+      "text": "Off"
+    },
+    "mod_pitch_key": {
+      "v": 0.5,
+      "text": "+0.00 st/oct"
+    },
+    "mod_pitch_keyon": {
+      "v": 0.0,
+      "text": "Off"
+    },
+    "mod_pitch_lfo": {
+      "v": 0.54,
+      "text": "+0.56 st"
+    },
+    "mod_pitch_lfoon": {
+      "v": 1.0,
+      "text": "On"
+    },
+    "mod_pitch_lfowidth": {
+      "v": 0.5,
+      "text": "+0.00 st"
+    },
+    "mod_pitch_lfowidthon": {
+      "v": 0.0,
+      "text": "Off"
+    },
+    "mod_pitch_noise": {
+      "v": 0.5,
+      "text": "+0.00 st"
+    },
+    "mod_pitch_noiseon": {
+      "v": 0.0,
+      "text": "Off"
+    },
+    "mod_pitch_press": {
+      "v": 0.5,
+      "text": "+0.00 st"
+    },
+    "mod_pitch_presson": {
+      "v": 0.0,
+      "text": "Off"
+    },
+    "mod_pitch_sub": {
+      "v": 0.5,
+      "text": "+0.00 st"
+    },
+    "mod_pitch_subon": {
+      "v": 0.0,
+      "text": "Off"
+    },
+    "mod_pitch_vco1": {
+      "v": 0.5,
+      "text": "+0.00 st"
+    },
+    "mod_pitch_vco1on": {
+      "v": 0.0,
+      "text": "Off"
+    },
+    "mod_pitch_vco2": {
+      "v": 0.5,
+      "text": "+0.00 st"
+    },
+    "mod_pitch_vco2on": {
+      "v": 0.0,
+      "text": "Off"
+    },
+    "mod_pitch_vel": {
+      "v": 0.5,
+      "text": "+0.00 st"
+    },
+    "mod_pitch_velon": {
+      "v": 0.0,
+      "text": "Off"
+    },
+    "mod_pitch_wheel": {
+      "v": 0.5,
+      "text": "+0.00 st"
+    },
+    "mod_pitch_wheelon": {
+      "v": 0.0,
+      "text": "Off"
+    },
+    "mod_width_autobend": {
+      "v": 0.5,
+      "text": "+0 %"
+    },
+    "mod_width_autobendon": {
+      "v": 0.0,
+      "text": "Off"
+    },
+    "mod_width_bend": {
+      "v": 0.5,
+      "text": "+0 %"
+    },
+    "mod_width_bendon": {
+      "v": 0.0,
+      "text": "Off"
+    },
+    "mod_width_env": {
+      "v": 0.5,
+      "text": "+0 %"
+    },
+    "mod_width_envon": {
+      "v": 0.0,
+      "text": "Off"
+    },
+    "mod_width_key": {
+      "v": 0.5,
+      "text": "+0 %/oct"
+    },
+    "mod_width_keyon": {
+      "v": 0.0,
+      "text": "Off"
+    },
+    "mod_width_lfo": {
+      "v": 0.5,
+      "text": "+0 %"
+    },
+    "mod_width_lfoon": {
+      "v": 0.0,
+      "text": "Off"
+    },
+    "mod_width_lfowidth": {
+      "v": 0.5,
+      "text": "+0 %"
+    },
+    "mod_width_lfowidthon": {
+      "v": 0.0,
+      "text": "Off"
+    },
+    "mod_width_noise": {
+      "v": 0.5,
+      "text": "+0 %"
+    },
+    "mod_width_noiseon": {
+      "v": 0.0,
+      "text": "Off"
+    },
+    "mod_width_press": {
+      "v": 0.5,
+      "text": "+0 %"
+    },
+    "mod_width_presson": {
+      "v": 0.0,
+      "text": "Off"
+    },
+    "mod_width_sub": {
+      "v": 0.5,
+      "text": "+0 %"
+    },
+    "mod_width_subon": {
+      "v": 0.0,
+      "text": "Off"
+    },
+    "mod_width_vco1": {
+      "v": 0.5,
+      "text": "+0 %"
+    },
+    "mod_width_vco1on": {
+      "v": 0.0,
+      "text": "Off"
+    },
+    "mod_width_vco2": {
+      "v": 0.5,
+      "text": "+0 %"
+    },
+    "mod_width_vco2on": {
+      "v": 0.0,
+      "text": "Off"
+    },
+    "mod_width_vel": {
+      "v": 0.5,
+      "text": "+0 %"
+    },
+    "mod_width_velon": {
+      "v": 0.0,
+      "text": "Off"
+    },
+    "mod_width_wheel": {
+      "v": 0.5,
+      "text": "+0 %"
+    },
+    "mod_width_wheelon": {
+      "v": 0.0,
+      "text": "Off"
+    },
+    "portamento": {
+      "v": 0.0,
+      "text": "0 ms"
+    },
+    "pulsewidth": {
+      "v": 1.0,
+      "text": "50 %"
+    },
+    "release": {
+      "v": 0.31465036,
+      "text": "100 ms"
+    },
+    "resonance": {
+      "v": 0.3,
+      "text": "30 %"
+    },
+    "sub": {
+      "v": 0.0,
+      "text": "0 %"
+    },
+    "sustain": {
+      "v": 1.0,
+      "text": "100 %"
+    },
+    "trigger": {
+      "v": 0.0,
+      "text": "Gate + trig"
+    },
+    "tune": {
+      "v": 0.5,
+      "text": "0 cents"
+    },
+    "vcamode": {
+      "v": 0.5,
+      "text": "Envelope"
+    },
+    "vco1": {
+      "v": 1.0,
+      "text": "100 %"
+    },
+    "vco1bender": {
+      "v": 1.0,
+      "text": "On"
+    },
+    "vco1range": {
+      "v": 0.5,
+      "text": "8'"
+    },
+    "vco1wave": {
+      "v": 0.6667,
+      "text": "Square"
+    },
+    "vco2": {
+      "v": 0.8,
+      "text": "80 %"
+    },
+    "vco2range": {
+      "v": 0.5,
+      "text": "8'"
+    },
+    "vco2tune": {
+      "v": 0.47,
+      "text": "-6 %"
+    },
+    "vco2tunerange": {
+      "v": 0.0,
+      "text": "Narrow"
+    },
+    "vco2wave": {
+      "v": 0.6667,
+      "text": "Square"
+    },
+    "volume": {
+      "v": 0.87145656,
+      "text": "-6.0 dB"
+    }
+  },
+  "state": null
+}

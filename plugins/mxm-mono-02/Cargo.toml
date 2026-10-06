@@ -1,0 +1,45 @@
+[package]
+name = "mxm-mono-02"
+description = "Monophonic two-oscillator synthesizer, architecture inspired by the SH-2"
+version.workspace = true
+edition.workspace = true
+# The editor pulls in egui, which declares 1.95. `mxm-mono-02-dsp` stays at 1.87 and must not be
+# dragged up with it - the editor depends on the DSP, never the reverse.
+rust-version.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+
+[lib]
+# `lib` as well as `cdylib`: the shipped artifact is the `cdylib`. The `lib` is what would let an
+# `apps/mxm-mono-02-standalone` link the plugin later; it adds no dependencies and changes nothing
+# about the bundle. **Do not enable nice-plug's `standalone` feature here** - it pulls in cpal and
+# JACK, and Cargo's feature unification would put them in the shipped `.clap`.
+crate-type = ["cdylib", "lib"]
+
+[dependencies]
+nice-plug.workspace = true
+nice-plug-egui.workspace = true
+mxm-ui.workspace = true
+mxm-preset.workspace = true
+mxm-tempo.workspace = true
+egui.workspace = true
+mxm-mono-02-dsp.workspace = true
+mxm-modulation.workspace = true
+mxm-modulation-params.workspace = true
+
+
+[dev-dependencies]
+# The collection's shared headless checks (`crates/mxm-plugin-test`).
+mxm-plugin-test.workspace = true
+# Lays the editor out in an AccessKit-backed harness so a test can measure where controls landed
+# from the accessibility tree rather than by eye. The version the player already pins. `wgpu`
+# renders a frame to pixels for the layout-tree review pictures (`mxm_plugin_test::tree_checks`,
+# `tree_pictures`). Test-only: nothing here reaches the bundle.
+egui_kittest = { version = "=0.36.1", features = ["wgpu"] }
+image = { version = "=0.25.9", default-features = false, features = ["png"] }
+kittest = "=0.4.0"
+# The modulation standard's checks (`mxm_plugin_test::routing_checks`): the route parameters are
+# held to the DSP's own declaration. Test-only features, so the bundle carries neither.
+mxm-modulation = { workspace = true, features = ["conformance"] }
+mxm-mono-02-dsp = { workspace = true, features = ["conformance"] }

@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "_comment": [
+    "Which of mxm-mono-02's parameters fill the collection's control roles.",
+    "Roles come from docs/MXM_CONTROL_MAP.md, which is normative; parameters are named by",
+    "their permanent string id, never by display name.",
+    "",
+    "This map claims amp_env.trigger, the role added to the standard with this instrument:",
+    "the role and the instrument entered the standard in one change, so no player compiles in",
+    "one without the other and withholding it would protect nobody - docs/MXM_CONTROL_MAP.md",
+    "section 9 records the rule and its reason.",
+    "",
+    "The machine's hard-wired modulation is routing now: every depth role names the amount of a",
+    "route the init patch wires, so its knob is live on a fresh instance. The pulse width is shared",
+    "by both oscillators, so the Osc 2 page's width slot names the same parameter as the Osc 1",
+    "page's. osc1.tune is the master tune; osc2.tune is VCO-2's own.",
+    "",
+    "osc1.pwm_source and osc2.pwm_source are unfilled: the source switch is gone, its two positions",
+    "being two routes. osc1.pwm_depth and osc2.pwm_depth are unfilled: the init patch routes nothing",
+    "to the pulse width (the owner, 2026-09-27), so a depth knob there would be dead.",
+    "filter_env.polarity is unfilled: the envelope's polarity is the sign of its route's amount.",
+    "mod_pitch_lfo is also reachable on CC 77 as the fixed vibrato-depth knob."
+  ],
+  "instruments": [
+    {
+      "clap_id": "dk.mxm.mxm-mono-02",
+      "name": "mxm-mono-02",
+      "params": {
+        "osc1.range": "vco1range",
+        "osc1.tune": "tune",
+        "osc1.wave": "vco1wave",
+        "osc1.pulse_width": "pulsewidth",
+
+        "osc2.range": "vco2range",
+        "osc2.tune": "vco2tune",
+        "osc2.wave": "vco2wave",
+        "osc2.pulse_width": "pulsewidth",
+
+        "mixer.src1": "vco1",
+        "mixer.src2": "vco2",
+        "mixer.sub_level": "sub",
+
+        "filter.cutoff": "cutoff",
+        "filter.resonance": "resonance",
+        "filter.env_amount": "mod_cutoff_env",
+        "filter.key_track": "mod_cutoff_key",
+        "filter.lfo_amount": "mod_cutoff_lfo",
+
+        "amp_env.attack": "attack",
+        "amp_env.decay": "decay",
+        "amp_env.sustain": "sustain",
+        "amp_env.release": "release",
+        "amp_env.trigger": "trigger",
+
+        "lfo1.rate": "lforate",
+        "lfo1.shape": "lfomode",
+        "lfo1.to_pitch": "mod_pitch_lfo",
+        "lfo1.to_filter": "mod_cutoff_lfo",
+        "lfo1.delay": "lfodelay",
+
+        "voice.glide": "portamento",
+        "voice.bend_range": "bendrange",
+        "voice.vca_source": "vcamode",
+        "voice.output": "volume"
+      }
+    }
+  ]
+}
