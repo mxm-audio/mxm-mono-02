@@ -561,7 +561,7 @@ impl Default for MxmMono02Params {
                 },
             )
             // Smoothed because it scales a held bend into the pitch: a range edit under a held bend
-            // would otherwise be a pitch step (`docs/code-review-notes.md` §2).
+            // would otherwise be a pitch step (mxm-kit's `docs/code-review-notes.md` §2).
             .with_smoother(SmoothingStyle::Linear(20.0))
             .with_unit(" st")
             .with_value_to_string(formatters::v2s_f32_rounded(0)),
@@ -634,7 +634,7 @@ mod tests {
     }
 
     /// **Every parameter reads the same after the host's own round trip**: printed with its unit,
-    /// parsed, and printed again, it is the same text (`docs/code-review-notes.md` §6).
+    /// parsed, and printed again, it is the same text (mxm-kit's `docs/code-review-notes.md` §6).
     ///
     /// The host never hands a formatter a plain value. The CLAP wrapper's `value_to_text` and
     /// `text_to_value` carry a normalised value in `f64`, scaled by the step count, so a parsed number

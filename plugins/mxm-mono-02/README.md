@@ -70,7 +70,7 @@ system's §15 gate have not been run, and nobody has listened to the routing con
 
 **Fidelity is UNVERIFIED.** No unit was measured. The constants are read off the service notes and
 pinned by the DSP crate's own harness — see
-[`crates/mxm-mono-02-dsp`](../../crates/mxm-mono-02-dsp/AGENTS.md) for every one and its reason.
+[`crates/mxm-mono-02-dsp`](../../crates/mxm-mono-02-dsp/NOTES.md) for every one and its reason.
 
 ## Building
 
@@ -79,4 +79,4 @@ cargo xtask bundle mxm-mono-02 --release
 clap-validator validate "target/bundled/mxm-mono-02.clap"
 ```
 
-MIT licensed — see [LICENSE](LICENSE). All code is original.
+GPL-3.0-or-later — see the repository's [`LICENSE`](../../LICENSE). All code is original.

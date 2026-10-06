@@ -17,9 +17,9 @@ rules, the editor contract — live in the parent and are not restated here. Thi
 
 # Ownership
 
-`BASELINE-M0.md`, `Cargo.toml`, `LICENSE`, `README.md`, `control-map.json`, `presets/`, and `src/` —
+`BASELINE-M0.md`, `Cargo.toml`, `README.md`, `control-map.json`, `presets/`, and `src/` —
 `lib.rs`, `params.rs`, `routes.rs`, `preset.rs`, `telemetry.rs`, and `editor.rs` with its
-`editor/{binding, sections, visuals}.rs`.
+`editor/{binding, sections, visuals}.rs`. Its licence is the repository's root `LICENSE`.
 
 # Local Contracts
 
@@ -139,7 +139,7 @@ rules, the editor contract — live in the parent and are not restated here. Thi
 - **Every card is a `mxm_ui::tree`**, exactly as wide as its computed floor; a route stack's floor is
   its widest row, so adding a route never widens it; the Bender is `tree::disclosure`, reserved
   open. Painted names may drop prefixes; host, hover and accessibility text keep the parameter's
-  name. `sections::draw` keeps its signature for `apps/mxm-layout-lab`.
+  name. `sections::draw` keeps its signature for `apps/mxm-layout-lab` (in the private archive).
 - **Volume is in the app bar, not a card**; **routes are drawn beneath what they move**. The scope's
   per-sample stores are skipped while no editor exists (`Telemetry::editor_open`).
 - **Layout is measured, not judged**: `every_card_passes_the_tree_checks_in_every_state`,
@@ -159,7 +159,7 @@ rules, the editor contract — live in the parent and are not restated here. Thi
 - **Regenerating after a parameter change:** `cargo test -p mxm-mono-02 --lib write_the_factory_presets -- --ignored`;
   `every_factory_preset_covers_every_parameter` fails until it is run.
 - `editor`, `params`, `routes` and `telemetry` are `pub` (with `Section`, `SECTIONS`, `title()`) so
-  the layout bench draws these real cards; they do not change the shipped `cdylib` or CLAP entry point.
+  the layout bench (private archive) draws these real cards; they do not change the shipped `cdylib` or CLAP entry point.
 
 # Work Guidance
 
@@ -175,7 +175,7 @@ cargo xtask bundle mxm-mono-02 --release
 cargo xtask bundle mxm-mono-02              # debug, for the allocation assertions
 clap-validator validate "target/bundled/mxm-mono-02.clap"
 cargo test -p mxm-mono-02-host-tests       # behaviour and golden_audio, through MXM Player
-cargo test -p mxm-player --test t5_control_map --test t7_editor
+cargo test -p mxm-player --test t5_control_map --test t7_editor   # in the mxm-player repository
 cargo test -p mxm-mono-02 --release --lib baseline -- --ignored --nocapture --test-threads=1   # BASELINE-M0.md; timings count only on a quiet machine
 ```
 
@@ -183,7 +183,7 @@ The validator’s sample-rate sweep relies on every DSP corner being clamped bel
 
 - **In MXM Player**, `host-tests/tests/behaviour.rs` proves the shipped bundle by permanent id (pitch,
   host-written cutoff, low-note priority, HOLD, the pulse-width LFO route) and `golden_audio.rs`
-  plays a fixed score, provisionally repinned after the routing conversion; `t7_editor.rs` opens the
+  plays a fixed score, provisionally repinned after the routing conversion (pinned on Windows only); `t7_editor.rs` opens the
   editor for real (`--ignored`). Detail: [NOTES.md § In MXM Player](NOTES.md#in-mxm-player).
 - **Not run by a person yet:** the editor by eye at each zoom, the brief's trial, a real DAW,
   listening to the routing conversion, and any comparison against hardware. Fidelity is UNVERIFIED.

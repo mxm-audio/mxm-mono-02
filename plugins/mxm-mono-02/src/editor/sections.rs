@@ -485,8 +485,8 @@ pub fn paint(ui: &mut Ui, tokens: &Tokens, leaf: &Leaf, rect: Rect, live: &mut L
     }
 }
 
-/// Draws one section's body: its tree, shown in `ui`. The layout lab (`apps/mxm-layout-lab`) draws
-/// these real cards through this.
+/// Draws one section's body: its tree, shown in `ui`. The layout lab (`apps/mxm-layout-lab`, in the
+/// private archive since the split) draws these real cards through this.
 pub fn draw(
     ui: &mut Ui,
     tokens: &Tokens,

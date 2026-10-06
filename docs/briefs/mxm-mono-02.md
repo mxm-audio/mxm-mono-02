@@ -5,6 +5,10 @@ deliberate deviations and the decisions the plan (`plans/plan-mxm-mono-02.md` §
 document. Written with the editor, and measured against it, rather than before it — the plan's
 phase 0 and phase 2 were delivered in one pass, and every number below is one a test pins.
 
+*Since the split (2026-10-06):* the design system is mxm-kit's
+[`docs/MXM_DESIGN_SYSTEM.md`](https://github.com/mxm-audio/mxm-kit/blob/main/docs/MXM_DESIGN_SYSTEM.md),
+`crates/ui` is mxm-kit's too, and the plans cited here are in the private archive.
+
 **Instrument:** a monophonic synthesizer with two free-running oscillators, a sub-oscillator locked
 to the first, one shared pulse-width-modulation section, a four-OTA cascade filter with a diode
 clamp, one envelope shared three ways, a modulator with a delay that fades its sine only, and a

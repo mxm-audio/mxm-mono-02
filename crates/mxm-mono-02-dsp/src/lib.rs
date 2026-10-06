@@ -11,7 +11,7 @@
 //!
 //! `flush` and `Rng` are the fifth honest copies of `mxm-mono-01-dsp`'s, byte for
 //! byte, as the plan's §7.2 requires; the extraction plan owes them one evidence
-//! row and gets it from this crate's AGENTS.md.
+//! row and gets it from this crate's NOTES.md.
 
 #[cfg(any(test, feature = "conformance"))]
 pub mod conformance;

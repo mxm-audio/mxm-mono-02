@@ -1215,9 +1215,10 @@ mod tests {
         }
     }
 
-    /// **The layout lab's entry draws each card as its tree.** `apps/mxm-layout-lab` calls
-    /// `sections::draw` with its own state; the wrapper builds the card's tree and shows it, so the
-    /// card the lab draws is as tall as that tree says, at the floor the paging renderer is given.
+    /// **The layout lab's entry draws each card as its tree.** `apps/mxm-layout-lab` (private
+    /// archive) calls `sections::draw` with its own state; the wrapper builds the card's tree and
+    /// shows it, so the card the lab draws is as tall as that tree says, at the floor the paging
+    /// renderer is given.
     #[test]
     fn the_layout_labs_entry_draws_each_card_as_its_tree() {
         let floors = test_floors();

@@ -22,7 +22,7 @@
 //! The block keeps **presses** — one entry per note-on until its release, with the
 //! per-note state a host may address to it — because the player's tie emits the
 //! new note *before* the old one's release, so for a moment two presses of the same
-//! key are held (`apps/mxm-player/src/events/press.rs`). A set keyed by pitch would
+//! key are held (mxm-player's `apps/mxm-player/src/events/press.rs`). A set keyed by pitch would
 //! silence a same-pitch tie or route a bend to a released id while still passing
 //! every no-retrigger test. Among presses of equal key the **older** one sounds, so a
 //! same-pitch press changes nothing until the older press is released, and the

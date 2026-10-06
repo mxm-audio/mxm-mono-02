@@ -2,6 +2,9 @@
 
 The detail behind this folder's AGENTS.md: history, measurements, rationale and worked examples. AGENTS.md is the contract; this file is the reference it links to.
 
+*Since the split (2026-10-06):* the `plans/` cited below are the design history, in the private
+archive.
+
 ## Permanent identifiers
 
 **131 host parameters**: twenty-seven controls and 104 routing parameters, where there were
@@ -129,7 +132,7 @@ lever, the wheel, pressure and velocity are each a routing source, published by 
 standard — and the Velocity source is the press that last **triggered the envelope**, which the voice
 holds, not the owner's (`crates/mxm-mono-02-dsp/AGENTS.md`). `bendrange` is **smoothed** (20 ms):
 it scales the held bend into pitch, so a range edit under a held bend is a ramp rather than a step —
-`docs/code-review-notes.md` §2, and the owner's ruling of 2026-09-15.
+mxm-kit's `docs/code-review-notes.md` §2, and the owner's ruling of 2026-09-15.
 `a_range_edit_under_a_held_bend_ramps_rather_than_steps` holds it.
 
 **The keyboard block lives in the DSP.** Every note event passes `voice_id`, `channel`, `note` and its
@@ -170,7 +173,7 @@ and the ranges are not — a configuration is not a signal.
 `control-map.json` fills thirty roles, `amp_env.trigger` among them — the role appended to
 the standard's Amp page for this instrument. It is claimed rather than withheld because the role
 and the instrument entered the standard in one change, so no player compiles in one without the
-other; `docs/MXM_CONTROL_MAP.md` §9 records the rule. **Every depth role names the amount of a route
+other; mxm-kit's [`docs/MXM_CONTROL_MAP.md`](https://github.com/mxm-audio/mxm-kit/blob/main/docs/MXM_CONTROL_MAP.md) §9 records the rule. **Every depth role names the amount of a route
 Init wires**, so its knob is live on a fresh instance — four routing ids for five roles, because the
 filter's LFO amount and the LFO's filter depth both name (Cutoff ← LFO);
 `a_control_map_role_never_points_at_a_dead_route`. The Osc 2 page's width slot names the same
@@ -210,7 +213,7 @@ to the sound, never the machine's history or its circuit (2026-09-27: *the modul
 sine*, *always in circuit* went) — and each button of a row has its own. The opening size is derived:
 `the_opening_size_is_the_budget_hugged` prints the number to take when a card changes.
 
-**Every card is a `mxm_ui::tree`** (`crates/ui/AGENTS.md`, *A card body as data*).
+**Every card is a `mxm_ui::tree`** (mxm-kit's [`crates/ui/AGENTS.md`](https://github.com/mxm-audio/mxm-kit/blob/main/crates/ui/AGENTS.md), *A card body as data*).
 `sections::card` describes a card's body once and `sections::paint` draws each leaf through the same
 bindings; the paged view is `paging::editor::show`. The gaps are the hand layout's: the body's
 `SPACE_3` rhythm, with the `add_space` it put on top as pads.
@@ -234,8 +237,8 @@ bindings; the paged view is `paging::editor::show`. The gaps are the hand layout
   and the gap under it, the drop `the_bender_toggle_sits_on_the_range_switchs_cell_line` measures.
 - **The Bender is `tree::disclosure`**, the collection's, as mxm-mono-00's and mxm-mono-01's
   Advanced: the card reserves its body open, so opening it never moves the card's width or height.
-- `sections::draw` stays for `apps/mxm-layout-lab`, with its signature: it builds the section's tree
-  and shows it.
+- `sections::draw` stays for `apps/mxm-layout-lab` (in the private archive since the split), with its
+  signature: it builds the section's tree and shows it.
 - `every_card_passes_the_tree_checks_in_every_state` runs `mxm_plugin_test::tree_checks` over every
   card at Init, with the Bender open, with every route revealed at full negative depth (Bender
   closed and open), and with a note sounding — a scope with a wave in it and the modulated cutoff
@@ -288,7 +291,7 @@ app-bar bar card on every frame, whichever page card is requested.
 
 ## `preset.rs` is this instrument's `Instrument` impl and its factory set
 
-The system is `crates/mxm-preset`. This plugin owns the **fifty factory sounds** in `presets/`, each
+The system is mxm-kit's `crates/mxm-preset`. This plugin owns the **fifty factory sounds** in `presets/`, each
 with its category, generated from `FACTORY_DESIGN` in `preset.rs`’s test
 module (`write_the_factory_presets`, `#[ignore]`d; `the_factory_files_match_the_design_they_were_generated_from`
 catches a stale file), and `every_factory_preset_can_be_heard`, which asks that a mixer level be
@@ -304,6 +307,8 @@ on its bench instead of copying the section code, which would then drift.
 
 The same section data feeds this editor’s paging renderer and the layout bench. The public modules
 are an in-repository test seam; they do not change the shipped `cdylib` or CLAP entry point.
+*Since the split (2026-10-06)* the layout bench is no longer in this repository: it stays in the
+private archive.
 
 ## In MXM Player
 
@@ -314,7 +319,8 @@ the envelope mode ending it in exact silence, and **the pulse-width section's LF
 and raised by the host sweeping the pulse** — the conversion's headline gesture by permanent id. The
 golden's score switches that route on too, since Init stopped showing it: the patch it pinned.
 `plugins/mxm-mono-02/host-tests/tests/golden_audio.rs` plays a fixed score through the same path, pinned before the routing
-conversion and provisionally repinned after it. `t7_editor.rs` opens the editor for real (`--ignored`).
+conversion and provisionally repinned after it (its digest compared on Windows only since
+2026-10-06). `t7_editor.rs` opens the editor for real (`--ignored`).
 **Not run by a person yet:** the editor judged by eye at each zoom, the brief's trial, a real DAW,
 listening to the routing conversion (its plan's M5), and any listening comparison against hardware.
 Fidelity is UNVERIFIED.

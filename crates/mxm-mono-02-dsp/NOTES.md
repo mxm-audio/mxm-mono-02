@@ -64,7 +64,7 @@ The rules the review made explicit, each pinned by a test named beside it:
 
 ## The filter is mono-01's diode-clamped ladder with this machine's constants, and its calibration is the machine's
 
-`filter.rs` is `crates/mxm-mono-01-dsp/src/filter.rs` copied whole — the TPT one-poles, the
+`filter.rs` is mxm-mono-01's `crates/mxm-mono-01-dsp/src/filter.rs` copied whole — the TPT one-poles, the
 per-sample Newton solve, `diode_clamp` as the loop's only nonlinearity — with the text kept
 verbatim so the extraction plan can diff it. `research:filters/machines/ba662-sh-2.md`
 is why that is the right model. Four constants differ, and one thing is added, each with its
@@ -383,7 +383,7 @@ nothing else.
 
 `[dev-dependencies]` holds **`mxm-measure`**, the collection's measurement rulers — zero dependencies
 at this same floor, reaching only tests and `examples/`, never a shipped `.clap`.
-[`../mxm-measure/AGENTS.md`](https://github.com/mxm-audio/mxm-kit/blob/main/crates/mxm-measure/AGENTS.md)'s verification section checks that rather than
+mxm-kit's [`crates/mxm-measure/AGENTS.md`](https://github.com/mxm-audio/mxm-kit/blob/main/crates/mxm-measure/AGENTS.md)'s verification section checks that rather than
 asserting it.
 
 It also holds **`mxm-audio-file`**, which writes the listening demo, and **`mxm-audio-file-decode`**,
@@ -395,7 +395,7 @@ MPL-2.0 symphonia therefore reaches this crate's tests and never its shipped gra
 No framework types; realtime rules on every per-sample path — the block is fixed arrays and
 never allocates; denormals flushed in the DSP itself; `f32` in the audio path and `f64` for
 prewarping; every saturator bounded exactly and monotonic; a stated `pub const` output bound;
-deterministic seeded randomness. These are the parent's and
+deterministic seeded randomness. These are the monorepo root's and mxm-mono-01's
 [`crates/mxm-mono-01-dsp/AGENTS.md`](https://github.com/mxm-audio/mxm-mono-01/blob/main/crates/mxm-mono-01-dsp/AGENTS.md)'s, not restated here.
 
 **`MIN_SAMPLE_RATE` (1 kHz) is the lowest rate the plugin activates at.** `f32::clamp` panics on a

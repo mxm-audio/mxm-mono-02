@@ -1,8 +1,8 @@
 //! The routing conversion's obligations, each a test that fails without the thing it names.
 //!
-//! `plans/plan-mxm-mono-02-modulation.md` §6, which is `docs/code-review-notes.md` §7 made specific to
-//! this machine. Every assertion here was run against the defect it names; the plan's §13
-//! records each mutation and what it did.
+//! `plans/plan-mxm-mono-02-modulation.md` §6, which is mxm-kit's `docs/code-review-notes.md` §7
+//! made specific to this machine. Every assertion here was run against the defect it names; the
+//! plan's §13 records each mutation and what it did.
 
 // `let mut p = Params::default(); p.x = …` reads as the patch it is, as in the voice's own tests.
 #![allow(clippy::field_reassign_with_default)]

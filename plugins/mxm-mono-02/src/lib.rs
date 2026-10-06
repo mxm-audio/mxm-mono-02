@@ -48,8 +48,9 @@ pub const NAME: &str = plugin_name!();
 /// written under the old id orphaned.
 pub const CLAP_ID: &str = concat!("dk.mxm.", plugin_name!());
 
-// Public for `apps/mxm-layout-lab` on the `dynamic-layout` branch: the lab draws these real
-// cards outside a host. Nothing else about them changes, and the shipped cdylib is unaffected.
+// Public for `apps/mxm-layout-lab` (in the private archive since the split) on the
+// `dynamic-layout` branch: the lab draws these real cards outside a host. Nothing else about them
+// changes, and the shipped cdylib is unaffected.
 pub mod editor;
 pub mod params;
 pub mod preset;
@@ -614,7 +615,7 @@ mod routing {
     }
 
     /// What the wrapper does in `activate`: a smoother reads zero until it is updated, so a test
-    /// that reads a patch has to do it first (`docs/adding-an-instrument.md` gotcha 13).
+    /// that reads a patch has to do it first (mxm-kit's `docs/adding-an-instrument.md` gotcha 13).
     fn activate_smoothers(plugin: &MxmMono02) {
         for (_, ptr, _) in plugin.params.param_map() {
             unsafe { ptr._internal_update_smoother(48_000.0, true) };
@@ -651,8 +652,9 @@ mod routing {
 
     /// **A range edit under a held bend ramps the pitch; it never steps it.** The channel keeps the
     /// bender's position and the range scales it per sample, so the range is a signal
-    /// (`docs/code-review-notes.md` §2). Verified against the defect: with `bend_range.value()` in
-    /// `next_patch`, the first sample after the edit is already the whole new range.
+    /// (mxm-kit's `docs/code-review-notes.md` §2). Verified against the defect: with
+    /// `bend_range.value()` in `next_patch`, the first sample after the edit is already the whole
+    /// new range.
     #[test]
     fn a_range_edit_under_a_held_bend_ramps_rather_than_steps() {
         let mut plugin = MxmMono02::default();
@@ -971,8 +973,8 @@ mod baseline {
     const FS: f32 = 48_000.0;
     const BLOCK: usize = 64;
 
-    /// A plugin with every smoother activated (`docs/adding-an-instrument.md` gotcha 13) and the
-    /// voice at the rate `activate` would give it.
+    /// A plugin with every smoother activated (mxm-kit's `docs/adding-an-instrument.md` gotcha 13)
+    /// and the voice at the rate `activate` would give it.
     fn plugin() -> MxmMono02 {
         let mut plugin = MxmMono02::default();
         for (_, ptr, _) in plugin.params.param_map() {
@@ -1054,7 +1056,8 @@ mod baseline {
         println!();
     }
 
-    /// FNV-1a over the raw bits, as `plugins/mxm-mono-01/host-tests/tests/golden_audio.rs` computes it.
+    /// FNV-1a over the raw bits, as mxm-mono-01's
+    /// `plugins/mxm-mono-01/host-tests/tests/golden_audio.rs` computes it.
     fn digest(samples: &[f32]) -> String {
         let mut hash: u64 = 0xcbf2_9ce4_8422_2325;
         for sample in samples {
@@ -1248,8 +1251,8 @@ mod routing_path {
     }
 
     /// **Velocity and pressure reach the voice from the press it is sounding** — and when the voice
-    /// falls back to an older held press, both follow it (`docs/code-review-notes.md` §2,
-    /// channel-owned expression refreshing on fallback).
+    /// falls back to an older held press, both follow it (mxm-kit's `docs/code-review-notes.md`
+    /// §2, channel-owned expression refreshing on fallback).
     #[test]
     fn velocity_and_pressure_follow_the_sounding_press_through_a_fallback() {
         let mut plugin = plugin();

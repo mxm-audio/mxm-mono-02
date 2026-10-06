@@ -268,7 +268,7 @@ pub const INIT_PRESENT: [(usize, usize); 6] = [
 /// **Presence is what the DSP reads.** An absent route contributes nothing whatever its amount
 /// holds. **It travels beside the patch, not inside it**: `voice::Params` is `Copy` and rebuilt
 /// every sample, and a grid carried there is a memcpy per sample for values that change on a
-/// parameter event (`docs/code-review-notes.md` §7).
+/// parameter event (mxm-kit's `docs/code-review-notes.md` §7).
 #[derive(Debug, Clone, Copy)]
 pub struct Routing {
     /// Per target, per source: whether that route exists.
@@ -405,7 +405,7 @@ impl Graph {
     /// published it, so its slot still holds whatever it held the last time something did — which a
     /// backward route added to a running voice would read for one sample, from a different phrase
     /// and a span the host's buffers decided. Clearing the slot makes that sample a deterministic
-    /// zero (`crates/mxm-modulation/AGENTS.md`, *A gated publication owes a clear*).
+    /// zero (mxm-kit's `crates/mxm-modulation/AGENTS.md`, *A gated publication owes a clear*).
     pub fn set_topology(&mut self, routing: &Routing) {
         for (live, present) in self.live.iter_mut().zip(routing.present.iter()) {
             live.build(present);

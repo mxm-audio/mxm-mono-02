@@ -609,7 +609,7 @@ mod tests {
         // Measured at k = 3.83 — resonance 0.766 on this crate's calibrated scale,
         // the same loop gain mono-01 measures at 0.85 — where the loop dominates and
         // the input stage's own compression is negligible at every level used.
-        // The numbers this crate measured, and the tanh sabotage, are in AGENTS.md;
+        // The numbers this crate measured, and the tanh sabotage, are in NOTES.md;
         // the thresholds are the same as mono-01's because the loop is the same.
         //
         // On the **matched** reference, deliberately: this is a measurement of the
@@ -835,7 +835,7 @@ mod tests {
     /// unit's four stages differ by a fixed seeded spread. What the test pins is the
     /// deep-dive's §10 finding — a stage spread moves *how much* the filter resonates,
     /// not *where* it sings — and the plan's "small" as a bound; the numbers it prints
-    /// are in AGENTS.md.
+    /// are in NOTES.md.
     #[test]
     fn this_units_stage_spread_moves_the_peak_and_not_the_onset() {
         let fs = 48_000.0;

@@ -53,7 +53,7 @@ rate.
 ## Filter (`filter.rs`) — mono-01's ladder, this machine's calibration
 [NOTES.md § The filter](NOTES.md#the-filter-is-mono-01s-diode-clamped-ladder-with-this-machines-constants-and-its-calibration-is-the-machines) (the constants table, each reason, the measurements)
 
-- A verbatim copy of `crates/mxm-mono-01-dsp/src/filter.rs`, kept diffable for the extraction plan.
+- A verbatim copy of mxm-mono-01's `crates/mxm-mono-01-dsp/src/filter.rs`, kept diffable for the extraction plan.
   Only `K_MAX`, `CUTOFF_MIN_HZ`, `EXCITATION_THRESHOLD` and the input stage differ; `INPUT_KNEE` and
   `STAGE_SPREAD` (wart 16) are added; `CLAMP_KNEE` stays mono-01's.
 - `K_MAX` puts self-oscillation's onset in the service notes' 7–9 band
@@ -97,7 +97,7 @@ rate.
 - All Sound Off silences every mode and latches HOLD until a note-on, `reset`, or HOLD re-entered;
   a mixer move does not resume it. A choke alone cuts without a tail; All Notes Off leaves a HOLD drone.
 - A panic resets the ladder and the coupling stage and keeps the owner and the free-running state;
-  the portamento lag and settle are **undecided** (`plans/plan-sibling-audit.md` O4)
+  the portamento lag and settle are **undecided** (`plans/plan-sibling-audit.md` O4, private archive)
   (`panic_clears_the_filter_and_the_coupling_but_retains_the_owner`).
 - **Activity follows the output** (`SILENCE_FLOOR` within `POST_TAIL_S`), except that a held key, and
   a HOLD drone an Amplitude route holds silent, never idle. `Routing::moves` asks for a depth, not a
@@ -189,8 +189,9 @@ Properties the tests must keep asserting, because each regresses silently (the f
 - two instances bit-identical
 
 **No hardware was measured**, here or in any source this instrument rests on. Fidelity is
-UNVERIFIED until the plan's listening gate is run. Linux and macOS are unverified — there is no CI
-(root *Windows, Linux and macOS*) — and the development machine is Windows.
+UNVERIFIED until the plan's listening gate is run. The development machine is Windows; Linux is
+checked in WSL before a push, and macOS only by CI on a release tag (root *Windows, Linux and
+macOS*).
 
 # Child DOX Index
 

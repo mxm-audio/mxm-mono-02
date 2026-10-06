@@ -1,8 +1,8 @@
 //! The brief's §8 display: the filter's response, and where the sum has taken the cutoff.
 //!
-//! Draws with theme tokens and never with a literal colour: `crates/ui/AGENTS.md` is explicit that
-//! a consumer needing a value the theme does not expose adds the token there rather than the
-//! literal here.
+//! Draws with theme tokens and never with a literal colour: mxm-kit's `crates/ui/AGENTS.md` is
+//! explicit that a consumer needing a value the theme does not expose adds the token there rather
+//! than the literal here.
 
 use egui::{Color32, Pos2, Rect, Sense, Stroke, Ui, Vec2, pos2};
 use mxm_ui::theme::Tokens;

@@ -306,7 +306,7 @@ impl TargetRoutes {
     /// pair was absent its parameter stayed editable — automation, a preset load — and that moves
     /// the target while the smoother stays wherever the last live sample left it. Resuming would
     /// ramp the route in from a stale depth over a span set by how long it was absent, which is the
-    /// host's buffers deciding a sound (`docs/code-review-notes.md` §7).
+    /// host's buffers deciding a sound (mxm-kit's `docs/code-review-notes.md` §7).
     pub fn arm(&self, newly_present: &[bool; SOURCES]) {
         for (s, &now) in newly_present.iter().enumerate() {
             if now {

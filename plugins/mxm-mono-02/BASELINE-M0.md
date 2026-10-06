@@ -1,6 +1,6 @@
 # mxm-mono-02 — pre-conversion reference, captured at M0
 
-`plans/plan-mxm-mono-02-modulation.md` M0. **These figures stop existing once the routing conversion
+`plans/plan-mxm-mono-02-modulation.md` (in the private archive) M0. **These figures stop existing once the routing conversion
 starts**, which is why they are captured first and recorded rather than re-derived later.
 
 Produced by `plugins/mxm-mono-02/src/lib.rs`'s `baseline` module, on the tree at `ba3bd30` with only
@@ -15,7 +15,7 @@ Release only.
 ## Throughput — the cost gate, not yet measured
 
 **No figure is recorded here, deliberately.** Every timing taken during this conversion was taken
-while another conversion was building on the same machine, and `docs/code-review-notes.md` §3 is
+while another conversion was building on the same machine, and mxm-kit's `docs/code-review-notes.md` §3 is
 plain that a timing taken during a build is not a measurement. The figures this document first
 carried were taken the same way and are withdrawn. The digests below are deterministic and are
 unaffected.
@@ -206,6 +206,10 @@ render the largest sample difference is 2.2e-5, 9.6e-5 of the score's peak (−8
 98 304 samples — rounding in size, as the bank's are. The WAV was byte-identical before and after
 the settled-route change. The sensitivity check still moves the digest. **No listening is claimed**:
 the owner's pass at plan M5 confirms the pin or replaces it.
+
+*Since the split (2026-10-06):* the player golden is this repository's
+`plugins/mxm-mono-02/host-tests/tests/golden_audio.rs`, still `cc5225cc63e39d8d`, and the digest is
+compared on Windows only.
 
 ### Throughput
 

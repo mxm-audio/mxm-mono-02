@@ -1,9 +1,9 @@
 //! Analog-style ADSR envelope.
 //!
-//! **A copy of `crates/mxm-poly-06-dsp/src/envelope.rs`, deliberately whole** — which is itself
-//! mono-01's with the decay stall fixed — as `plans/plan-mxm-mono-02.md` §7.2 asks: one-pole
-//! exponential segments, an attack that aims past its target and switches when it crosses 1.0.
-//! The fifth honest copy; this crate's AGENTS.md carries the evidence row.
+//! **A copy of mxm-poly-06's `crates/mxm-poly-06-dsp/src/envelope.rs`, deliberately whole** —
+//! which is itself mono-01's with the decay stall fixed — as `plans/plan-mxm-mono-02.md` §7.2 asks:
+//! one-pole exponential segments, an attack that aims past its target and switches when it crosses
+//! 1.0. The fifth honest copy; this crate's NOTES.md carries the evidence row.
 //!
 //! **One envelope, three consumers** (`research:instruments/sh-2.md` §8, wart 19): the VCF through
 //! its polarity switch, the VCA in ENV mode, and the pulse width in PWM ENV mode all follow this
