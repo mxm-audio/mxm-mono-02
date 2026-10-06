@@ -189,8 +189,8 @@ Properties the tests must keep asserting, because each regresses silently (the f
 - two instances bit-identical
 
 **No hardware was measured**, here or in any source this instrument rests on. Fidelity is
-UNVERIFIED until the plan's listening gate is run. The development machine is Windows; Linux is
-checked in WSL before a push, and macOS only by CI on a release tag (root *Windows, Linux and
+UNVERIFIED until the plan's listening gate is run. The development machine is Windows; Linux and
+macOS are checked later, together, and by CI on a `v*` tag (root *Windows, Linux and
 macOS*).
 
 # Child DOX Index
