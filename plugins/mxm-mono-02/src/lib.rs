@@ -60,9 +60,22 @@ pub mod telemetry;
 use mxm_mono_02_dsp::keyboard::NoteId;
 use mxm_mono_02_dsp::routing::Routing;
 use mxm_mono_02_dsp::voice::{Params as VoiceParams, Voice};
+use nice_plug::midi::{Channel, Key, VoiceID};
 use nice_plug::prelude::*;
 use params::MxmMono02Params;
 use std::sync::Arc;
+
+/// A note's identity in the shape the voice logic was written for. nice-plug 0.4 types it
+/// (`VoiceID`, `Channel`, `Key`, each with a wildcard); 0.3 handed over a host's wildcard (-1) as
+/// 255 and a missing voice id as `None`. Converting here keeps every note decision, and every
+/// recorded render, exactly what it was before the upgrade.
+fn legacy_note(voice_id: VoiceID, channel: Channel, key: Key) -> (Option<i32>, u8, u8) {
+    (
+        voice_id.id(),
+        channel.number().unwrap_or(u8::MAX),
+        key.number().unwrap_or(u8::MAX),
+    )
+}
 
 /// Upper bound on how many samples are rendered between event checks.
 ///
@@ -228,10 +241,11 @@ impl MxmMono02 {
             NoteEvent::NoteOn {
                 voice_id,
                 channel,
-                note,
+                key,
                 velocity,
                 ..
             } => {
+                let (voice_id, channel, note) = legacy_note(voice_id, channel, key);
                 // Velocity zero is a note-off by convention. Otherwise it reaches the voice as the
                 // Velocity source and nothing else: the machine's keyboard had none.
                 if velocity <= 0.0 {
@@ -250,9 +264,10 @@ impl MxmMono02 {
             NoteEvent::NoteOff {
                 voice_id,
                 channel,
-                note,
+                key,
                 ..
             } => {
+                let (voice_id, channel, note) = legacy_note(voice_id, channel, key);
                 self.voice.note_off(voice_id, channel, note);
             }
 
@@ -263,9 +278,10 @@ impl MxmMono02 {
             NoteEvent::Choke {
                 voice_id,
                 channel,
-                note,
+                key,
                 ..
             } => {
+                let (voice_id, channel, note) = legacy_note(voice_id, channel, key);
                 self.voice.choke(voice_id, channel, note);
             }
 
@@ -275,10 +291,11 @@ impl MxmMono02 {
             NoteEvent::PolyTuning {
                 voice_id,
                 channel,
-                note,
+                key,
                 tuning,
                 ..
             } if tuning.is_finite() => {
+                let (voice_id, channel, note) = legacy_note(voice_id, channel, key);
                 self.voice.set_expression(voice_id, channel, note, tuning);
             }
 
@@ -592,14 +609,15 @@ mod init_patch {
 #[cfg(test)]
 mod routing {
     use super::MxmMono02;
+    use nice_plug::midi::{Channel, Key, VoiceID};
     use nice_plug::prelude::*;
 
     fn note_on(plugin: &mut MxmMono02, channel: u8, note: u8) {
         plugin.handle_event(NoteEvent::NoteOn {
             timing: 0,
-            voice_id: None,
-            channel,
-            note,
+            voice_id: VoiceID::Wildcard,
+            channel: Channel::Number(channel),
+            key: Key::Number(note),
             velocity: 0.8,
         });
     }
@@ -607,9 +625,9 @@ mod routing {
     fn note_off(plugin: &mut MxmMono02, channel: u8, note: u8) {
         plugin.handle_event(NoteEvent::NoteOff {
             timing: 0,
-            voice_id: None,
-            channel,
-            note,
+            voice_id: VoiceID::Wildcard,
+            channel: Channel::Number(channel),
+            key: Key::Number(note),
             velocity: 0.0,
         });
     }
@@ -705,17 +723,17 @@ mod routing {
         note_on(&mut plugin, 0, 48);
         plugin.handle_event(NoteEvent::PolyTuning {
             timing: 0,
-            voice_id: None,
-            channel: 0,
-            note: 48,
+            voice_id: VoiceID::Wildcard,
+            channel: Channel::Number(0),
+            key: Key::Number(48),
             tuning: -3.5,
         });
         assert_eq!(plugin.voice.owner().expression_semitones, -3.5);
         plugin.handle_event(NoteEvent::PolyTuning {
             timing: 0,
-            voice_id: None,
-            channel: 0,
-            note: 55,
+            voice_id: VoiceID::Wildcard,
+            channel: Channel::Number(0),
+            key: Key::Number(55),
             tuning: 7.0,
         });
         assert_eq!(
@@ -738,9 +756,9 @@ mod routing {
     fn a_non_finite_tuning_expression_is_dropped_and_the_pitch_stays_finite() {
         let tuning = |tuning: f32| NoteEvent::PolyTuning {
             timing: 0,
-            voice_id: None,
-            channel: 0,
-            note: 48,
+            voice_id: VoiceID::Wildcard,
+            channel: Channel::Number(0),
+            key: Key::Number(48),
             tuning,
         };
         let plugin = || {
@@ -792,6 +810,8 @@ mod routing {
 #[cfg(test)]
 mod process_callback {
     use super::MxmMono02;
+    use nice_plug::context::process::SendEventError;
+    use nice_plug::midi::{Channel, Key, VoiceID};
     use nice_plug::prelude::*;
 
     struct TestContext {
@@ -800,6 +820,8 @@ mod process_callback {
     }
 
     impl ProcessContext<MxmMono02> for TestContext {
+        // A test double has no host to ask for a restart (nice-plug 0.4).
+        fn request_restart(&self) {}
         fn plugin_api(&self) -> PluginApi {
             PluginApi::Clap
         }
@@ -811,7 +833,12 @@ mod process_callback {
         fn next_event(&mut self) -> Option<NoteEvent<()>> {
             self.note_on.take()
         }
-        fn send_event(&mut self, _event: NoteEvent<()>) {}
+        fn try_send_event(
+            &mut self,
+            _event: NoteEvent<()>,
+        ) -> Result<(), (NoteEvent<()>, SendEventError)> {
+            Ok(())
+        }
         fn set_latency_samples(&self, _samples: u32) {}
         fn set_current_voice_capacity(&self, _capacity: u32) {}
     }
@@ -845,9 +872,9 @@ mod process_callback {
             transport,
             note_on: press.then_some(NoteEvent::NoteOn {
                 timing: 0,
-                voice_id: None,
-                channel: 0,
-                note: 48,
+                voice_id: VoiceID::Wildcard,
+                channel: Channel::Number(0),
+                key: Key::Number(48),
                 velocity: 0.8,
             }),
         };
@@ -990,17 +1017,17 @@ mod baseline {
         plugin.handle_event(if on {
             NoteEvent::NoteOn {
                 timing: 0,
-                voice_id: None,
-                channel: 0,
-                note,
+                voice_id: VoiceID::Wildcard,
+                channel: Channel::Number(0),
+                key: Key::Number(note),
                 velocity: 0.8,
             }
         } else {
             NoteEvent::NoteOff {
                 timing: 0,
-                voice_id: None,
-                channel: 0,
-                note,
+                voice_id: VoiceID::Wildcard,
+                channel: Channel::Number(0),
+                key: Key::Number(note),
                 velocity: 0.0,
             }
         });
@@ -1226,17 +1253,17 @@ mod routing_path {
         plugin.handle_event(if on {
             NoteEvent::NoteOn {
                 timing: 0,
-                voice_id: None,
-                channel,
-                note,
+                voice_id: VoiceID::Wildcard,
+                channel: Channel::Number(channel),
+                key: Key::Number(note),
                 velocity,
             }
         } else {
             NoteEvent::NoteOff {
                 timing: 0,
-                voice_id: None,
-                channel,
-                note,
+                voice_id: VoiceID::Wildcard,
+                channel: Channel::Number(channel),
+                key: Key::Number(note),
                 velocity: 0.0,
             }
         });
@@ -1364,9 +1391,9 @@ mod sample_rate_floor {
             assert_eq!(plugin.sample_rate, MIN_SAMPLE_RATE);
             plugin.handle_event(NoteEvent::NoteOn {
                 timing: 0,
-                voice_id: None,
-                channel: 0,
-                note: 48,
+                voice_id: VoiceID::Wildcard,
+                channel: Channel::Number(0),
+                key: Key::Number(48),
                 velocity: 0.8,
             });
             let out = render(&mut plugin, 4_000);
