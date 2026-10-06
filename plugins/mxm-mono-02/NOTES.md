@@ -299,7 +299,7 @@ controls. Init has no file.
 ## `editor`, `params`, `routes` and `telemetry` are public
 
 They are `pub`, with the `Section` enum, its `SECTIONS`, `title()` and the card grouping the flow
-reads, so [`apps/mxm-layout-lab`](https://github.com/mxm-audio/newdawn-workspace/blob/main/apps/mxm-layout-lab/AGENTS.md) can draw **these real cards**
+reads, so `apps/mxm-layout-lab` (`apps/mxm-layout-lab/AGENTS.md` in the private archive) can draw **these real cards**
 on its bench instead of copying the section code, which would then drift.
 
 The same section data feeds this editor’s paging renderer and the layout bench. The public modules
