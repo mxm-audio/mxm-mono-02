@@ -190,7 +190,7 @@ Properties the tests must keep asserting, because each regresses silently (the f
 
 **No hardware was measured**, here or in any source this instrument rests on. Fidelity is
 UNVERIFIED until the plan's listening gate is run. The development machine is Windows; Linux and
-macOS are checked later, together, and by CI on a `v*` tag (root *Windows, Linux and
+macOS are checked later, together, and by CI when started by hand (root *Windows, Linux and
 macOS*).
 
 # Child DOX Index
