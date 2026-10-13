@@ -166,6 +166,9 @@ impl NiceEguiApp for MxmMono02App {
         // Light by default, overridable with `MXM_EDITOR_THEME`. The reasoning, and why the
         // default is not `System`, lives on `mxm_ui::theme::preference`.
         egui_ctx.set_theme(mxm_ui::theme::preference());
+
+        // The keys of the keymap in use, in the folder newDAWn and every MXM editor share.
+        mxm_ui::navigation::use_shared_keymap(&egui_ctx);
         self.gui_context = Some(nice_gui_ctx);
         // The scope ring is filled only while this editor exists to read it.
         self.telemetry.set_editor_open(true);
