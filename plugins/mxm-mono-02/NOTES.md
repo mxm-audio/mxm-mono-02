@@ -41,7 +41,7 @@ lands back on the amount it came from. Every amount is the collection's one rout
 `mxm_modulation_params::reading::amount_param` — the envelope's shorter negative half a `Reach` whose
 `below` is the inverted reach — and `every_route_parameter_says_what_the_dsp_does` holds every
 pair's travel and reading to `mxm_mono_02_dsp::conformance` (`mxm_plugin_test::routing_checks`).
-**It never prints a negative zero**: its number goes through `mxm_modulation_params::signed`, and
+**It never prints a negative zero**: its number goes through `mxm_params::text::signed`, and
 `every_reading_survives_the_hosts_round_trip_a_rounded_zero_included` sends every amount through
 the host's own conversion either side of zero, where a plain signed format printed `-0`, which
 `clap-validator`'s `param-conversions` fails whenever its random values land there.
@@ -276,7 +276,7 @@ build filled every last card to the panel's bottom instead, and the build after 
 columns) and
 `the_bender_toggle_sits_on_the_range_switchs_cell_line` (through `egui_kittest`'s accessibility
 tree) each pin a finding from the owner's first looks.
-`editor/binding.rs` re-exports `mxm_preset::binding`, the collection's one binding (2026-09-24); its
+`editor/binding.rs` re-exports `mxm_params::binding`, the collection's one binding (2026-09-24); its
 `slider_inline` draws the app bar's output, reserving the widest reading so the bar holds still under
 a drag.
 

@@ -447,28 +447,18 @@ mod tests {
 
     const RATES: [f32; 4] = [44_100.0, 48_000.0, 96_000.0, 192_000.0];
 
-    /// Frequency estimated from positive-going zero crossings of VCO-1's output.
+    /// Frequency of VCO-1's output, between its first and last rising zero crossings interpolated
+    /// (`mxm_measure::pitch::frequency_by_crossings`), so the window's edges add no partial period.
     fn measure_freq(wave: Wave1, freq: f32, fs: f32, secs: f32) -> f32 {
         let mut v = Vco::new();
-        let n = (fs * secs) as usize;
-        // Period from the span between the first and last upward crossing, so the
-        // window's edges cannot add a partial period: a waveform that starts at a
-        // rising edge would otherwise count one crossing too many.
-        let (mut first, mut last, mut crossings, mut prev) = (None, 0usize, 0usize, f32::NAN);
-        for i in 0..n {
-            v.set_freq(freq, fs);
-            let y = v.process_1(wave, 0.3, fs);
-            if prev <= 0.0 && y > 0.0 {
-                if first.is_none() {
-                    first = Some(i);
-                }
-                last = i;
-                crossings += 1;
-            }
-            prev = y;
-        }
-        let first = first.expect("no crossings");
-        (crossings - 1) as f32 * fs / (last - first) as f32
+        let rendered: Vec<f32> = (0..(fs * secs) as usize)
+            .map(|_| {
+                v.set_freq(freq, fs);
+                v.process_1(wave, 0.3, fs)
+            })
+            .collect();
+        mxm_measure::pitch::frequency_by_crossings(&rendered, f64::from(fs))
+            .expect("a finite render with zero crossings") as f32
     }
 
     #[test]

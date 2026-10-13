@@ -26,9 +26,8 @@
 //! pitch depth `Pitch from LFO` and the auto bend `Pitch from Auto bend` — each a signed amount, so a
 //! depth `d` is the fraction `(d + 1) / 2` of its range.
 
-use mxm_player::events::input::Payload;
 use mxm_player::session::{FRAMES_PER_BLOCK, Session};
-use mxm_player_harness::app_harness;
+use mxm_player_harness::host_test::digest;
 use std::path::PathBuf;
 
 const PLUGIN: &str = "dk.mxm.mxm-mono-02";
@@ -42,22 +41,12 @@ const DIGESTS_PINNED_HERE: bool = cfg!(target_os = "windows");
 const GOLDEN_SAMPLES: usize = 96 * FRAMES_PER_BLOCK * 2;
 
 fn bundle() -> Option<(PathBuf, PathBuf)> {
-    let dir = app_harness::any_bundled_dir()?;
-    let file = dir.join("mxm-mono-02.clap");
-    file.exists().then_some((dir, file))
+    mxm_player_harness::host_test::plugin_bundle("mxm-mono-02")
 }
 
 /// Sets a parameter by display name, as a fraction of its plain range.
 fn set(s: &mut Session, name: &str, f: f64) {
-    let p = s
-        .state()
-        .param(name)
-        .unwrap_or_else(|| panic!("`{name}` is not a parameter"))
-        .clone();
-    s.app().engine_mut().push_gui_event(Payload::ParamValue {
-        param_id: p.id,
-        value: p.min + f * (p.max - p.min),
-    });
+    mxm_player_harness::host_test::push_fraction(s, name, f);
 }
 
 /// The patch the score plays. Fixed forever.
@@ -153,15 +142,4 @@ fn the_reference_is_sensitive_to_the_vibrato_depth() {
     if DIGESTS_PINNED_HERE {
         assert_ne!(digest(&samples), GOLDEN_DIGEST);
     }
-}
-
-fn digest(samples: &[f32]) -> String {
-    let mut h: u64 = 0xcbf2_9ce4_8422_2325;
-    for s in samples {
-        for b in s.to_bits().to_le_bytes() {
-            h ^= u64::from(b);
-            h = h.wrapping_mul(0x0000_0100_0000_01b3);
-        }
-    }
-    format!("{h:016x}")
 }

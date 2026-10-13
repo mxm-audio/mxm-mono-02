@@ -50,7 +50,7 @@ rules, the editor contract — live in the parent and are not restated here. Thi
   collection's standard reach (`a_route_reads_what_its_pair_delivers_and_reads_back`). Every amount
   is `mxm_modulation_params::reading::amount_param`, held to `mxm_mono_02_dsp::conformance` by
   `every_route_parameter_says_what_the_dsp_does`.
-- **No reading prints a negative zero** (`mxm_modulation_params::signed`;
+- **No reading prints a negative zero** (`mxm_params::text::signed`;
   `every_reading_survives_the_hosts_round_trip_a_rounded_zero_included`).
 - **Decision X1 (the owner, 2026-09-15): no `filter_state` is built.** State saved before the
   conversion loses what the nine retired ids held; automation on a retired id is not carried.
