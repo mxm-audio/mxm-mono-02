@@ -14,12 +14,12 @@
 //! which put the external input's follower on the cutoff. The external input was removed (the owner,
 //! 2026-09-26), and the Follower source and its route with it.
 
-use mxm_mono_02_dsp::Rng;
 use mxm_mono_02_dsp::routing::{self, Graph, Routing, source, target};
 use mxm_mono_02_dsp::voice::{
     AUTO_BEND_SEMITONES, BEND_FILTER_OCTAVES, FILTER_ENV_OCTAVES, FILTER_LFO_OCTAVES,
     INVERTED_RATIO, KEY_TRACK_CENTRE, KEY_TRACK_MAX, PWM_SWING, VCO_LFO_SEMITONES,
 };
+use mxm_rng::Xorshift32;
 
 #[derive(Clone, Copy, Debug)]
 enum Pwm {
@@ -154,8 +154,8 @@ fn routed(r: &Routing, width: f32, s: &Sources) -> (f32, f32, f32) {
 
 #[test]
 fn every_legacy_state_is_reachable_by_routes() {
-    let mut rng = Rng::new(0x5eed_0002);
-    let mut unit = move || 0.5 * (rng.next_bipolar() + 1.0);
+    let mut rng = Xorshift32::new(0x5eed_0002);
+    let mut unit = move || 0.5 * (rng.bipolar_f32() + 1.0);
     let (mut worst_pitch, mut worst_width, mut worst_cutoff) = (0.0f32, 0.0f32, 0.0f32);
     for trial in 0..20_000 {
         let pick = |u: f32, n: usize| ((u * n as f32) as usize).min(n - 1);

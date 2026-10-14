@@ -36,7 +36,8 @@
 //! sits on the reset and the sine's seam where the reset was. Presets and the golden
 //! score will make these durable; they are labelled here before they do.
 
-use crate::{Rng, flush};
+use crate::flush;
+use mxm_rng::Xorshift32;
 
 /// Lowest frequency the oscillator will produce. The 32' range at the bottom of the
 /// keyboard with the bender down reaches well under 20 Hz; below this the PolyBLEP
@@ -366,7 +367,7 @@ impl Sub {
 /// and is not invented.
 #[derive(Debug, Clone)]
 pub struct Noise {
-    rng: Rng,
+    rng: Xorshift32,
 }
 
 impl Default for Noise {
@@ -382,17 +383,17 @@ const NOISE_SEED: u32 = 0x0517_0202;
 impl Noise {
     pub const fn new() -> Self {
         Self {
-            rng: Rng::new(NOISE_SEED),
+            rng: Xorshift32::new(NOISE_SEED),
         }
     }
 
     pub fn reset(&mut self) {
-        self.rng = Rng::new(NOISE_SEED);
+        self.rng = Xorshift32::new(NOISE_SEED);
     }
 
     #[inline]
     pub fn sample(&mut self) -> f32 {
-        self.rng.next_bipolar()
+        self.rng.bipolar_f32()
     }
 }
 

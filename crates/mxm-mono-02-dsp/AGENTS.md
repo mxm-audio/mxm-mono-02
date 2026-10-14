@@ -130,11 +130,11 @@ rate.
 - `tests/legacy_reachability.rs` holds every retired control's reach, but ENV FOL'R (removed).
 
 ## Dependencies and the collection's DSP rules
-[NOTES.md § Dependencies](NOTES.md#dependencies-one-at-runtime) ·
+[NOTES.md § Dependencies](NOTES.md#dependencies-two-at-runtime) ·
 [NOTES.md § Everything else](NOTES.md#everything-else-the-collections-dsp-already-requires)
 
-- **One runtime dependency, `mxm-modulation`**, which has none and holds 1.87; the MSRV rests on
-  that. `mxm-measure`, `mxm-audio-file` and `mxm-audio-file-decode` are dev-dependencies only, so
+- **Two runtime dependencies, `mxm-modulation` and `mxm-rng`**, which have none and hold 1.87; the
+  MSRV rests on that. `mxm-measure`, `mxm-audio-file` and `mxm-audio-file-decode` are dev-dependencies only, so
   MPL-2.0 symphonia never reaches the shipped graph.
 - No framework types; realtime rules on every per-sample path (the block is fixed arrays);
   denormals flushed in the DSP; `f32` audio, `f64` prewarping; bounded monotonic saturators; a

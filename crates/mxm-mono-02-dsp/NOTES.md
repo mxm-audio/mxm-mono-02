@@ -374,12 +374,13 @@ envelope switch's ENV FOL'R, which put the follower on the cutoff — removed wi
 the bend range was this implementation's and not the machine's, whose two sensitivities are
 independent (`sh-2.md` §4.9, plan N1); the Bend source is the lever's position.
 
-## Dependencies: one at runtime
+## Dependencies: two at runtime
 
-**One runtime dependency, [`mxm-modulation`](https://github.com/mxm-audio/mxm-kit/blob/main/crates/mxm-modulation/AGENTS.md)**, which has none of its own
-and holds this same 1.87 floor — the routing conversion added it, and the MSRV override still rests on
-the shipped graph staying that small. `cargo tree -p mxm-mono-02-dsp -e normal` shows that crate and
-nothing else.
+**Two runtime dependencies, [`mxm-modulation`](https://github.com/mxm-audio/mxm-kit/blob/main/crates/mxm-modulation/AGENTS.md)
+and [`mxm-rng`](https://github.com/mxm-audio/mxm-kit/blob/main/crates/mxm-rng/AGENTS.md)**, which have
+none of their own and hold this same 1.87 floor — the routing conversion added the first and the
+shared generators the second (the audit's O3), and the MSRV override still rests on the shipped graph
+staying that small. `cargo tree -p mxm-mono-02-dsp -e normal` shows those crates and nothing else.
 
 `[dev-dependencies]` holds **`mxm-measure`**, the collection's measurement rulers — zero dependencies
 at this same floor, reaching only tests and `examples/`, never a shipped `.clap`.
@@ -404,11 +405,12 @@ NaN or crossed bound, and the ladder's `10 Hz ..= 0.45 × rate` crosses below 22
 ## Cross-crate comparison evidence
 
 Keep this comparison until a shared-DSP proposal either uses or rejects it; resemblance alone does
-not authorize extraction. `flush` and `Rng` match `mxm-mono-01-dsp` byte for byte:
+not authorize extraction. `flush` matches `mxm-mono-01-dsp` byte for byte:
 
 | Candidate | Standing against `mxm-mono-01-dsp` |
 |---|---|
-| `flush`, `Rng` | **Identical**, byte for byte |
+| `flush` | **Identical**, byte for byte |
+| `Rng` | **Extracted**: identical in eight crates, now `mxm-rng`'s `Xorshift32` (the audit's O3) |
 | The ladder: TPT core, Newton solve, `diode_clamp`, `tan_approx`, `tanh_approx` | **Same core, same clamp; four constants differ** (`K_MAX`, `CUTOFF_MIN_HZ`, `EXCITATION_THRESHOLD`, and the input stage's form — `INPUT_KNEE * tanh(x / INPUT_KNEE)` against `tanh(DRIVE * x)`, which is the same expression with `DRIVE` = 1 at one knee), **and the cascade's arithmetic is `mxm-poly-06-dsp`'s per-stage form** (four `G`s from four trims; mono-01's single `G` is that form with every trim at 1). So the three ladders are one module with a trim array and a saturator as its two differences — the shape an extractable module has |
 | `measure_oscillation_threshold` | **Diverged**: the sustain floor, see above; mono-01 should take it. `measure_oscillation_threshold_of` takes the constructor, so the matched reference can be measured with the same harness |
 | `poly_blep`, `Phasor`, `pulse`, `clamp_pulse_width` | **Identical** to mono-01's, except `Phasor::advance` reports the wrap (mono-00's form, which the sub needs) |
