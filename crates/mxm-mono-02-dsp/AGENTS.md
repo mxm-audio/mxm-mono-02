@@ -163,7 +163,7 @@ there; every bound and its headroom stays in the test that argues for it.
 ```bash
 cargo test -p mxm-mono-02-dsp
 cargo clippy -p mxm-mono-02-dsp --all-targets
-cargo tree -p mxm-mono-02-dsp -e normal                                  # mxm-modulation and mxm-rng, nothing else
+cargo tree -p mxm-mono-02-dsp -e normal                                  # mxm-modulation, mxm-rng and mxm-dsp, nothing else
 cargo +1.87.0 build -p mxm-mono-02-dsp                                   # and `test`, the harder floor
 cargo run -p mxm-mono-02-dsp --release --example mono_02_filter_spike   # the filter's real numbers, calibration included
 cargo run -p mxm-mono-02-dsp --release --example sh2_demo       # the mechanisms, played — writes mxm-mono-02-demo.wav
