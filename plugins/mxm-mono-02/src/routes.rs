@@ -146,7 +146,7 @@ fn reach(target: usize, source: usize) -> Reach {
 /// it replaced had, because it multiplies a signal.
 fn amount(target: usize, source: usize) -> FloatParam {
     reading::amount_param(
-        format!("{} from {}", TARGET_NAMES[target], SOURCE_NAMES[source]),
+        mxm_modulation_params::reading::amount_name(TARGET_NAMES[target], SOURCE_NAMES[source]),
         reach(target, source),
         Fader::for_offer(offer(target, source), false),
         10.0,
@@ -159,7 +159,7 @@ fn amount(target: usize, source: usize) -> FloatParam {
 /// (2026-09-27) and which a design that uses them switches on.
 fn present(target: usize, source: usize) -> BoolParam {
     BoolParam::new(
-        format!("{} from {} on", TARGET_NAMES[target], SOURCE_NAMES[source]),
+        mxm_modulation_params::reading::presence_name(TARGET_NAMES[target], SOURCE_NAMES[source]),
         INIT_PRESENT.contains(&(target, source)),
     )
 }
