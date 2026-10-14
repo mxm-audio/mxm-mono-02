@@ -64,9 +64,10 @@ The rules the review made explicit, each pinned by a test named beside it:
 
 ## The filter is mono-01's diode-clamped ladder with this machine's constants, and its calibration is the machine's
 
-`filter.rs` is mxm-mono-01's `crates/mxm-mono-01-dsp/src/filter.rs` copied whole — the TPT one-poles, the
-per-sample Newton solve, `diode_clamp` as the loop's only nonlinearity — with the text kept
-verbatim so the extraction plan can diff it. `research:filters/machines/ba662-sh-2.md`
+`filter.rs` is mxm-mono-01's ladder — the TPT one-poles, the per-sample Newton solve, `diode_clamp`
+as the loop's only nonlinearity — with the text kept diffable against mono-01's `filter.rs` for a later
+extraction of the ladder. The clamp, the saturators and the prewarp are `mxm-dsp`'s in both files (the
+audit's O1). `research:filters/machines/ba662-sh-2.md`
 is why that is the right model. Four constants differ, and one thing is added, each with its
 reason beside it:
 

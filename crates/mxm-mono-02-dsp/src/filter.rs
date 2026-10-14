@@ -12,8 +12,8 @@
 //! and the four stages carry a fixed seeded spread (wart 16), because the SH-2's OTAs
 //! were matched to a colour band rather than made identical. The cascade's arithmetic
 //! is therefore `mxm-poly-06-dsp`'s per-stage form rather than mono-01's single `G`.
-//! Everything else below is mono-01's text, kept verbatim so the extraction plan can
-//! diff it.
+//! Everything else below is mono-01's text, kept diffable against its `filter.rs` for a
+//! later extraction of the ladder; the clamp, saturators and prewarp are `mxm-dsp`'s in both.
 //!
 //! # Why the nonlinearity is inside the loop
 //!

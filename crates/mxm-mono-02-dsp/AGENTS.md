@@ -53,7 +53,8 @@ rate.
 ## Filter (`filter.rs`) — mono-01's ladder, this machine's calibration
 [NOTES.md § The filter](NOTES.md#the-filter-is-mono-01s-diode-clamped-ladder-with-this-machines-constants-and-its-calibration-is-the-machines) (the constants table, each reason, the measurements)
 
-- A verbatim copy of mxm-mono-01's `crates/mxm-mono-01-dsp/src/filter.rs`, kept diffable for the extraction plan.
+- mxm-mono-01's ladder, kept diffable against its `filter.rs` for a later extraction; the saturators,
+  prewarp and diode clamp both files used are `mxm-dsp`'s now.
   Only `K_MAX`, `CUTOFF_MIN_HZ`, `EXCITATION_THRESHOLD` and the input stage differ; `INPUT_KNEE` and
   `STAGE_SPREAD` (wart 16) are added; `CLAMP_KNEE` stays mono-01's.
 - `K_MAX` puts self-oscillation's onset in the service notes' 7–9 band
