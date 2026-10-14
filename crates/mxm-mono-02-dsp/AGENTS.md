@@ -17,7 +17,7 @@ history and the cross-crate evidence are in [NOTES.md](NOTES.md). The hosting pl
 
 # Ownership
 
-Owns `src/` (`lib.rs`, `keyboard.rs`, `filter.rs`, `oscillator.rs`, `envelope.rs`, `lfo.rs`,
+Owns `src/` (`lib.rs`, `keyboard.rs`, `filter.rs`, `oscillator.rs`, `lfo.rs`,
 `voice.rs`, `routing.rs`), `tests/` (`routing.rs`, `legacy_reachability.rs`), `examples/`
 (`mono_02_filter_spike.rs`, `sh2_demo.rs`; the hand-written `common/wav.rs` that `sh2_demo` used
 retired to `mxm-measure`'s encoder, and that encoder to `mxm-audio-file`) and `Cargo.toml`.
@@ -74,11 +74,11 @@ rate.
 - The waveforms' relative polarity and phase are inherited and chosen; presets and the golden score
   depend on them. The oscillator renders any width; never-past-square is the voice's clamp.
 
-## Envelope and modulator (`envelope.rs`, `lfo.rs`)
+## Envelope and modulator (`mxm_dsp::envelope`, `lfo.rs`)
 [NOTES.md § One envelope](NOTES.md#one-envelope-and-the-trigger-modes-are-the-voices) ·
 [NOTES.md § The modulator](NOTES.md#the-modulator-fades-the-sine-and-nothing-else-and-its-random-is-the-noise-held)
 
-- `envelope.rs` is `mxm-poly-06-dsp`'s stall-fixed ADSR copied whole. Which events call `trigger` is
+- The ADSR is `mxm-dsp`'s, the stall-fixed form this crate carried as a copy. Which events call `trigger` is
   the voice's business. Attack floor 1 ms, nothing de-clicks below it; exponential segments are a guess.
 - The LFO delay is an RC fade on the **sine path only**; the width tap (LFO to width) is the sine
   before the attenuator, whatever MODE says. A trigger dumps the capacitor and never resets the
@@ -130,11 +130,11 @@ rate.
 - `tests/legacy_reachability.rs` holds every retired control's reach, but ENV FOL'R (removed).
 
 ## Dependencies and the collection's DSP rules
-[NOTES.md § Dependencies](NOTES.md#dependencies-two-at-runtime) ·
+[NOTES.md § Dependencies](NOTES.md#dependencies-three-at-runtime) ·
 [NOTES.md § Everything else](NOTES.md#everything-else-the-collections-dsp-already-requires)
 
-- **Two runtime dependencies, `mxm-modulation` and `mxm-rng`**, which have none and hold 1.87; the
-  MSRV rests on that. `mxm-measure`, `mxm-audio-file` and `mxm-audio-file-decode` are dev-dependencies only, so
+- **Three runtime dependencies, `mxm-modulation`, `mxm-rng` and `mxm-dsp`**, which have none and hold
+  1.87; the MSRV rests on that. `mxm-measure`, `mxm-audio-file` and `mxm-audio-file-decode` are dev-dependencies only, so
   MPL-2.0 symphonia never reaches the shipped graph.
 - No framework types; realtime rules on every per-sample path (the block is fixed arrays);
   denormals flushed in the DSP; `f32` audio, `f64` prewarping; bounded monotonic saturators; a

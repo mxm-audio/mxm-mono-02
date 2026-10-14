@@ -52,13 +52,14 @@
 //! deliberate act: a note-on, `reset`, or HOLD left and re-entered (a session that sends no notes
 //! needs a way back a performer can reach).
 
-use crate::envelope::Adsr;
+use crate::filter;
 use crate::filter::Ladder;
 use crate::keyboard::{Keyboard, NoteId, Outcome, Owner, Press};
 use crate::lfo::{Mode, Modulator, Outputs};
 use crate::oscillator::{DcBlocker, Noise, Sub, Vco, Wave1, Wave2};
 use crate::routing::{Graph, Routing, source, target};
-use crate::{filter, flush};
+use mxm_dsp::envelope::Adsr;
+use mxm_dsp::guard::flush;
 use mxm_modulation::standard;
 
 /// The RANGE rotaries: exact octave steps from a resistor chain (`sh-2.md` §4.3).
@@ -1052,7 +1053,7 @@ mod tests {
             render(&mut v, &p, 1.0); // well past the attack
             let level_before = v.envelope_level();
             tie(&mut v, &p, 60, 48);
-            let retriggered = v.envelope.stage() == crate::envelope::Stage::Attack;
+            let retriggered = v.envelope.stage() == mxm_dsp::envelope::Stage::Attack;
             assert_eq!(
                 retriggered, downward_retriggers,
                 "{mode:?}: downward tie, level {level_before}"
@@ -1064,7 +1065,7 @@ mod tests {
             tie(&mut v, &p, 55, 55);
             assert_ne!(
                 v.envelope.stage(),
-                crate::envelope::Stage::Attack,
+                mxm_dsp::envelope::Stage::Attack,
                 "{mode:?}: a same-pitch tie retriggered"
             );
             assert!(v.is_held(), "and it still sounds");
@@ -1085,7 +1086,7 @@ mod tests {
         let mut was_attack = false;
         for _ in 0..(FS * 2.0) as usize {
             v.process(&p, &NONE);
-            let now = v.envelope.stage() == crate::envelope::Stage::Attack;
+            let now = v.envelope.stage() == mxm_dsp::envelope::Stage::Attack;
             if now && !was_attack {
                 attacks += 1;
             }
@@ -1099,7 +1100,7 @@ mod tests {
         let mut more = 0;
         for _ in 0..(FS * 2.0) as usize {
             v.process(&p, &NONE);
-            let now = v.envelope.stage() == crate::envelope::Stage::Attack;
+            let now = v.envelope.stage() == mxm_dsp::envelope::Stage::Attack;
             if now && !was_attack {
                 more += 1;
             }

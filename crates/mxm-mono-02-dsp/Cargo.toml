@@ -3,8 +3,8 @@ name = "mxm-mono-02-dsp"
 description = "DSP for mxm-mono-02, framework-free and unit-testable"
 version.workspace = true
 edition.workspace = true
-# Two runtime dependencies, `mxm-modulation` and `mxm-rng` — the collection's routing and generators,
-# each dependency-free at this same floor — so this still does NOT inherit the 1.95 GUI floor.
+# Three runtime dependencies, `mxm-modulation`, `mxm-rng` and `mxm-dsp` — the collection's routing,
+# generators and primitives, each dependency-free at this same floor — so this still does NOT inherit the 1.95 GUI floor.
 # `cargo tree -e normal` is the check.
 rust-version = "1.87"
 license.workspace = true
@@ -12,6 +12,7 @@ authors.workspace = true
 repository.workspace = true
 
 [dependencies]
+mxm-dsp.workspace = true
 mxm-rng.workspace = true
 mxm-modulation.workspace = true
 

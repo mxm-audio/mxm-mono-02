@@ -155,8 +155,8 @@ whatever routes reach it.
 
 ## One envelope, and the trigger modes are the voice's
 
-`envelope.rs` is `mxm-poly-06-dsp`'s ADSR copied whole — mono-01's with the decay stall fixed, as
-the plan's §7.2 asks. One object feeds the VCA and, through its routes, the VCF and the pulse width
+The ADSR is `mxm-dsp`'s (the audit's O1), moved from the copy this crate carried — `mxm-poly-06-dsp`'s,
+mono-01's with the decay stall fixed, as the plan's §7.2 asked. One object feeds the VCA and, through its routes, the VCF and the pulse width
 (wart 19). **Which events call `trigger` is not its business**: GATE+TRIG, GATE and LFO are the
 voice's three rules, fed by the keyboard block's trigger and the modulator's `square_rose`. Its
 attack floor is the machine's 1 ms and nothing de-clicks below it — the manual documents the click
@@ -374,13 +374,15 @@ envelope switch's ENV FOL'R, which put the follower on the cutoff — removed wi
 the bend range was this implementation's and not the machine's, whose two sensitivities are
 independent (`sh-2.md` §4.9, plan N1); the Bend source is the lever's position.
 
-## Dependencies: two at runtime
+## Dependencies: three at runtime
 
-**Two runtime dependencies, [`mxm-modulation`](https://github.com/mxm-audio/mxm-kit/blob/main/crates/mxm-modulation/AGENTS.md)
-and [`mxm-rng`](https://github.com/mxm-audio/mxm-kit/blob/main/crates/mxm-rng/AGENTS.md)**, which have
+**Three runtime dependencies, [`mxm-modulation`](https://github.com/mxm-audio/mxm-kit/blob/main/crates/mxm-modulation/AGENTS.md),
+[`mxm-rng`](https://github.com/mxm-audio/mxm-kit/blob/main/crates/mxm-rng/AGENTS.md) and
+[`mxm-dsp`](https://github.com/mxm-audio/mxm-kit/blob/main/crates/mxm-dsp/AGENTS.md)**, which have
 none of their own and hold this same 1.87 floor — the routing conversion added the first and the
-shared generators the second (the audit's O3), and the MSRV override still rests on the shipped graph
-staying that small. `cargo tree -p mxm-mono-02-dsp -e normal` shows those crates and nothing else.
+shared generators the second (the audit's O3) and the shared primitives the third (O1), and the MSRV
+override still rests on the shipped graph
+staying that small. `cargo tree -p mxm-mono-02-dsp -e normal` shows those three crates and nothing else.
 
 `[dev-dependencies]` holds **`mxm-measure`**, the collection's measurement rulers — zero dependencies
 at this same floor, reaching only tests and `examples/`, never a shipped `.clap`.
@@ -405,20 +407,20 @@ NaN or crossed bound, and the ladder's `10 Hz ..= 0.45 × rate` crosses below 22
 ## Cross-crate comparison evidence
 
 Keep this comparison until a shared-DSP proposal either uses or rejects it; resemblance alone does
-not authorize extraction. `flush` matches `mxm-mono-01-dsp` byte for byte:
+not authorize extraction. What proved identical has moved to the kit:
 
 | Candidate | Standing against `mxm-mono-01-dsp` |
 |---|---|
-| `flush` | **Identical**, byte for byte |
+| `flush` | **Extracted**: `mxm-dsp`'s `guard::flush` (the audit's O1) |
 | `Rng` | **Extracted**: identical in eight crates, now `mxm-rng`'s `Xorshift32` (the audit's O3) |
-| The ladder: TPT core, Newton solve, `diode_clamp`, `tan_approx`, `tanh_approx` | **Same core, same clamp; four constants differ** (`K_MAX`, `CUTOFF_MIN_HZ`, `EXCITATION_THRESHOLD`, and the input stage's form — `INPUT_KNEE * tanh(x / INPUT_KNEE)` against `tanh(DRIVE * x)`, which is the same expression with `DRIVE` = 1 at one knee), **and the cascade's arithmetic is `mxm-poly-06-dsp`'s per-stage form** (four `G`s from four trims; mono-01's single `G` is that form with every trim at 1). So the three ladders are one module with a trim array and a saturator as its two differences — the shape an extractable module has |
+| The ladder: TPT core, Newton solve; `diode_clamp`, `tan_approx` and `tanh_approx` are `mxm-dsp`'s | **Same core, same clamp; four constants differ** (`K_MAX`, `CUTOFF_MIN_HZ`, `EXCITATION_THRESHOLD`, and the input stage's form — `INPUT_KNEE * tanh(x / INPUT_KNEE)` against `tanh(DRIVE * x)`, which is the same expression with `DRIVE` = 1 at one knee), **and the cascade's arithmetic is `mxm-poly-06-dsp`'s per-stage form** (four `G`s from four trims; mono-01's single `G` is that form with every trim at 1). So the three ladders are one module with a trim array and a saturator as its two differences — the shape an extractable module has |
 | `measure_oscillation_threshold` | **Diverged**: the sustain floor, see above; mono-01 should take it. `measure_oscillation_threshold_of` takes the constructor, so the matched reference can be measured with the same harness |
-| `poly_blep`, `Phasor`, `pulse`, `clamp_pulse_width` | **Identical** to mono-01's, except `Phasor::advance` reports the wrap (mono-00's form, which the sub needs) |
+| `Phasor`, `pulse` (`poly_blep` and `clamp_pulse_width` are `mxm-dsp`'s) | **Identical** to mono-01's, except `Phasor::advance` reports the wrap (mono-00's form, which the sub needs) |
 | `DcBlocker` | **Diverged**: the corner is the caller's (`set_corner`), not the type's. mono-01's 15 Hz is that machine's chosen number and this machine's is a capacitor on its schematic; the extraction takes this form and each voice supplies its corner |
 | `saw` | **Diverged by design**: the discharge corner, two half residuals instead of one |
 | `triangle` | **Identical** to mono-00's |
 | The sub | `mxm-poly-06-dsp`'s divider, as a separate `Sub` clocked from `Vco::just_reset` rather than a field of the oscillator |
-| `Adsr` | **Identical** to `mxm-poly-06-dsp`'s (the stall-fixed form); mono-01's still carries the stall |
+| `Adsr` | **Extracted** with poly-06's and para-07's: `mxm-dsp`'s `envelope` (the stall-fixed form); mono-01's still carries the stall |
 | The modulator | New here: mono-01's LFO has five shapes and no delay, poly-06's a triangle with a wait-then-fade delay; this one has three shapes, a diode-rounded sine, an RC fade on one path and an un-delayed tap. Nothing to extract yet |
 
 ## Properties the tests must keep asserting

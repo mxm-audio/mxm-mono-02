@@ -36,7 +36,8 @@
 //! sits on the reset and the sine's seam where the reset was. Presets and the golden
 //! score will make these durable; they are labelled here before they do.
 
-use crate::flush;
+use mxm_dsp::blep::{clamp_pulse_width, poly_blep};
+use mxm_dsp::guard::flush;
 use mxm_rng::Xorshift32;
 
 /// Lowest frequency the oscillator will produce. The 32' range at the bottom of the
@@ -71,24 +72,6 @@ pub const RESET_S: f32 = 2.0e-6;
 /// measures it — and the two bench measurements that would replace it are the
 /// shaper's input level against the diodes' forward voltage.
 pub const SINE_KNEE: f32 = 0.9;
-
-/// PolyBLEP residual for a step discontinuity.
-///
-/// `t` is the phase in `0..1` and `dt` the per-sample phase increment. The residual
-/// corrects the two samples either side of a discontinuity, which removes most of
-/// the aliasing energy for the cost of a few operations.
-#[inline]
-fn poly_blep(t: f32, dt: f32) -> f32 {
-    if t < dt {
-        let x = t / dt;
-        x + x - x * x - 1.0
-    } else if t > 1.0 - dt {
-        let x = (t - 1.0) / dt;
-        x * x + x + x + 1.0
-    } else {
-        0.0
-    }
-}
 
 /// A free-running phase accumulator.
 #[derive(Debug, Clone, Copy, Default)]
@@ -183,21 +166,6 @@ pub fn pulse(p: &Phasor, width: f32) -> f32 {
     };
     y -= poly_blep(second, dt);
     y
-}
-
-/// Keep the two PolyBLEP corrections from overlapping.
-///
-/// Each correction spans `dt` either side of an edge, so if the pulse is narrower
-/// than `2*dt` the two would overlap and produce nonsense. At extreme frequencies
-/// where no valid width exists, fall back to a square. The one-sidedness of the
-/// SH-2's PWM — narrowing from 50 %, never past it — is the PWM section's rule
-/// (the voice's), not this function's: the oscillator renders whatever width it is
-/// given, and the width it is given never exceeds a half.
-#[inline]
-pub fn clamp_pulse_width(width: f32, dt: f32) -> f32 {
-    let lo = 0.05f32.max(2.0 * dt);
-    let hi = 0.95f32.min(1.0 - 2.0 * dt);
-    if lo > hi { 0.5 } else { width.clamp(lo, hi) }
 }
 
 /// The machine's triangle: the saw through switched inversion, taken from the phase.
