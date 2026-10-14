@@ -28,7 +28,6 @@ use mxm_ui::space::SPACE_5;
 use mxm_ui::theme::Tokens;
 use nice_plug::context::gui::GuiContext;
 use nice_plug::prelude::*;
-use nice_plug_egui::{EguiEditorState, NiceEguiApp, create_egui_editor};
 
 use crate::params::MxmMono02Params;
 use crate::telemetry::Telemetry;
@@ -95,38 +94,21 @@ impl Section {
 
 /// Builds the editor. Called from `Plugin::editor`.
 pub fn create(params: Arc<MxmMono02Params>, telemetry: Arc<Telemetry>) -> Option<MxmMono02Editor> {
-    let state = EguiEditorState::from_size(
-        nice_plug::editor::dpi::LogicalSize::new(REFERENCE.0, REFERENCE.1),
-        1.0,
-    );
-
-    create_egui_editor(
-        state,
-        nice_plug_egui::RepaintNotifier::new(),
-        nice_plug_egui::EguiNiceSettings {
-            title: crate::NAME.to_owned(),
-            // **A fixed window**: the layout never reflows, so a window of any other size could
-            // only add empty space or clip. Scaling is the zoom control in the app bar.
-            resize_hint: ResizeHint {
-                size_constraints: nice_plug::editor::SizeConstraints::min_logical_size(
-                    nice_plug::editor::dpi::LogicalSize::new(MINIMUM.0 as f32, MINIMUM.1 as f32),
-                ),
-                ..ResizeHint::RESIZABLE
-            },
-            ..Default::default()
-        },
+    mxm_editor::create(
+        crate::NAME,
+        REFERENCE,
+        MINIMUM,
         MxmMono02App::new(params, telemetry),
     )
 }
 
 /// The editor type the plugin exposes.
-pub type MxmMono02Editor = nice_plug_egui::EguiEditor<MxmMono02App>;
+pub type MxmMono02Editor = mxm_editor::Editor<MxmMono02App>;
 
 /// The editor's own state: what the plugin does not own and the host does not need.
 pub struct MxmMono02App {
     params: Arc<MxmMono02Params>,
     telemetry: Arc<Telemetry>,
-    gui_context: Option<GuiContext>,
     view: usize,
     text_entry: HashMap<&'static str, Option<String>>,
     presets: PresetUi,
@@ -145,7 +127,6 @@ impl MxmMono02App {
         Self {
             params,
             telemetry,
-            gui_context: None,
             view: 0,
             text_entry: HashMap::new(),
             presets: PresetUi::new(params_for_presets.as_ref()),
@@ -154,24 +135,13 @@ impl MxmMono02App {
     }
 }
 
-impl NiceEguiApp for MxmMono02App {
-    fn build(
-        &mut self,
-        egui_ctx: egui::Context,
-        nice_gui_ctx: GuiContext,
-        _frame: &mut nice_plug_egui::Frame,
-    ) -> Result<(), nice_plug_egui::baseview::HandlerError> {
-        mxm_ui::shell::install(&egui_ctx);
-        self.gui_context = Some(nice_gui_ctx);
+impl mxm_editor::Panel for MxmMono02App {
+    fn opened(&mut self, _egui_ctx: &egui::Context, _nice_gui_ctx: &GuiContext) {
         // The scope ring is filled only while this editor exists to read it.
         self.telemetry.set_editor_open(true);
-        Ok(())
     }
 
-    fn ui(&mut self, ui: &mut Ui, _frame: &mut nice_plug_egui::Frame) {
-        let Some(gui_context) = self.gui_context.clone() else {
-            return;
-        };
+    fn ui(&mut self, ui: &mut Ui, gui_context: &GuiContext) {
         panel(
             ui,
             &self.params,
@@ -184,11 +154,10 @@ impl NiceEguiApp for MxmMono02App {
         );
     }
 
-    fn editor_closed(&mut self) {
+    fn closed(&mut self, _host: &GuiContext) {
         // §8: the visualizations stop when the editor is closed — the audio thread stops
         // filling the scope on its next block. Dropping the context releases the host's callbacks.
         self.telemetry.set_editor_open(false);
-        self.gui_context = None;
     }
 }
 
