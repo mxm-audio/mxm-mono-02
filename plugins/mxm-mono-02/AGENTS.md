@@ -28,6 +28,7 @@ rules, the editor contract — live in the parent and are not restated here. Thi
 | What | Value |
 |---|---|
 | `CLAP_ID` | `dk.mxm.mxm-mono-02` — assembled from `plugin_name!` in `src/lib.rs`, **not** from `CARGO_PKG_NAME` |
+| `VST3_CLASS_ID` | `VST3_CLASS_ID` in `src/lib.rs`, the CLAP id's hash written out |
 | Parameter `#[id]`s | **LFO:** `lforate` `lfosync` `lfodelay` `lfomode`<br>**Oscillator:** `pulsewidth` `tune` `vco1range` `vco1wave` `vco1bender` `vco2range` `vco2wave` `vco2tune` `vco2tunerange`<br>**Mixer:** `sub` `vco1` `vco2`<br>**Filter:** `cutoff` `resonance`<br>**Envelope:** `attack` `decay` `sustain` `release` `trigger`<br>**Amplifier:** `vcamode`<br>**Voice:** `portamento` `bendrange`<br>**Output, in the app bar:** `volume` |
 | Routing `#[id]`s | `mod_<target>_<source>`, the amount, and `mod_<target>_<source>on`, the presence — targets `pitch` `width` `cutoff` `amp`, sources `lfo` `lfowidth` `env` `autobend` `key` `vel` `wheel` `press` `bend` `vco1` `vco2` `sub` `noise`. Written out in `routes::ROUTE_IDS` |
 | Retired, never re-used | `vcolfo` `autobend` `pwmdepth` `pwmmode` `envamount` `envpolarity` `vcflfo` `keytrack` `bendfilter` (the routing conversion); `mod_pitch_follower` `mod_width_follower` `mod_cutoff_follower` `mod_amp_follower` and each one's `…on` presence (the external input's removal, 2026-09-26) — `routes::RETIRED_IDS` |
