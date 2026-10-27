@@ -54,12 +54,13 @@ Every sound they made can be made again with routes.
 
 ## Presets
 
-Fifty factory sounds, compiled into the plugin, the first twenty one per mechanism: beating saws, the sub bass, the
-square lead, a pulse-width sweep, the sine flute, a noise wash, delayed vibrato, a random filter, a
-gate stab, the auto-bend dip, hollow fifths, an inverted pluck, a slow glide, an LFO trill, and the
-rest. **Init is not a file**: it is generated from the parameter defaults, so it cannot be deleted
-and cannot drift from them. Your own presets are saved as readable JSON under the platform config
-directory.
+Fifty factory sounds, the first twenty one per mechanism: beating saws, the sub bass, the square
+lead, a pulse-width sweep, the sine flute, a noise wash, delayed vibrato, a random filter, a gate
+stab, the auto-bend dip, hollow fifths, an inverted pluck, a slow glide, an LFO trill, and the rest.
+They are files installed with the plugin, beside the `.clap` and inside the `.vst3`, and any CLAP
+host lists and loads them too. **Init is not a file**: it is generated from the parameter defaults,
+so it cannot be deleted and cannot drift from them. Your own presets are saved as readable JSON
+under the platform config directory.
 
 ## Status
 

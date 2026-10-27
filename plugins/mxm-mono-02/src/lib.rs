@@ -522,6 +522,13 @@ impl ClapPlugin for MxmMono02 {
         ClapFeature::Stereo,
         ClapFeature::Mono,
     ];
+
+    // Its factory presets, for a host to list and load (`mxm_preset::clap`).
+    const CLAP_PRESETS: Option<ClapPresets> = Some(mxm_preset::clap::PRESETS);
+
+    fn preset_loader(&self) -> Option<Arc<dyn ClapPresetLoader>> {
+        Some(Arc::new(mxm_preset::clap::Loader(self.params.clone())))
+    }
 }
 
 impl Vst3Plugin for MxmMono02 {
@@ -1184,7 +1191,7 @@ mod baseline {
         let mut out = Vec::new();
         let mut init = plugin();
         out.push(("Init", render_one(&mut init), 0));
-        for (name, json) in crate::preset::FACTORY_FILES {
+        for (name, json) in crate::preset::FACTORY_FILES.iter() {
             let mut p = plugin();
             let applied = apply(&p, json);
             out.push((name, render_one(&mut p), applied));
